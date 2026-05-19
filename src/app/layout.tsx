@@ -12,8 +12,8 @@ const font = Poppins({
 
 export const metadata: Metadata = {
 	icons: {
-		icon: '/images/favicon.svg',
-		shortcut: '/images/favicon.svg'
+		icon: '/images/icons/favicon.svg',
+		shortcut: '/images/icons/favicon.svg'
 	},
 	title: {
 		absolute: SITE_NAME,
