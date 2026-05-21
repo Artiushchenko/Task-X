@@ -1,14 +1,11 @@
 import { SITE_NAME } from '@/constants'
+import { cn } from '@/utils'
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import './globals.css'
 import { Providers } from './Providers'
 
-const font = Poppins({
-	variable: '--font-sans',
-	subsets: ['latin'],
-	weight: ['300', '400', '500', '600', '700', '800', '900']
-})
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
 	icons: {
@@ -31,8 +28,9 @@ export default function RootLayout({
 		<html
 			lang='en'
 			suppressHydrationWarning
+			className={cn('font-sans', geist.variable)}
 		>
-			<body className={`${font.variable} antialiased`}>
+			<body className={`${geist.variable} antialiased`}>
 				<Providers>{children}</Providers>
 			</body>
 		</html>
