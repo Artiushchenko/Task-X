@@ -37,7 +37,7 @@ export const TASKS: ITask[] = [
 	},
 	{
 		id: '2',
-		title: 'E-commerce Website Redesign',
+		title: 'E-commerce Site Redesign',
 		icon: ShoppingBasket,
 		dueDate: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000),
 		comments: ['Initial design review', 'Feedback received'],

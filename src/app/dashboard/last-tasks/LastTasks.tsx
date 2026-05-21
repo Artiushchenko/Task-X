@@ -4,9 +4,9 @@ import { TASKS } from '../data/last-tasks.data'
 export function LastTasks() {
 	return (
 		<div>
-			<h2 className='text-xl font-medium mb-2'>
+			<h2 className='mb-5 text-xl font-medium'>
 				Last Tasks{' '}
-				<span className='opacity-50 font-normal'>({TASKS.length})</span>
+				<span className='text-lg font-normal opacity-40'>({TASKS.length})</span>
 			</h2>
 
 			{TASKS.length ? (
