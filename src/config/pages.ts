@@ -2,6 +2,11 @@ export class Pages {
 	static BASE = '/dashboard'
 
 	static DASHBOARD = Pages.BASE
+
+	static TASK_EDIT(id: string) {
+		return `${Pages.BASE}/task/${id}/edit`
+	}
+
 	static MESSAGES = `${Pages.BASE}/messages`
 	static INSIGHT = `${Pages.BASE}/insight`
 	static TEAM = `${Pages.BASE}/team`
