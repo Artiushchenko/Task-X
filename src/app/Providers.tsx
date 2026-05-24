@@ -3,6 +3,7 @@
 import { ThemeProvider } from 'next-themes'
 import dynamic from 'next/dynamic'
 import type { PropsWithChildren } from 'react'
+import { Toaster } from 'sonner'
 
 const DynamicThemeToggle = dynamic(
 	() => import('./ThemeToggle').then(mod => mod.ThemeToggle),
@@ -19,6 +20,8 @@ export function Providers({ children }: PropsWithChildren<unknown>) {
 			enableSystem
 		>
 			{children}
+
+			<Toaster />
 
 			<DynamicThemeToggle />
 		</ThemeProvider>

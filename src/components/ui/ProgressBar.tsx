@@ -46,7 +46,7 @@ export function ProgressBar({ progress }: Props) {
 		<div className='bg-primary/10 relative h-12 w-full overflow-hidden rounded-full'>
 			<div
 				className={cn(
-					'flex h-full cursor-default items-center justify-center rounded-full bg-size-[56px_56px] font-medium text-white',
+					'flex h-full cursor-default items-center justify-center rounded-full bg-size-[56px_56px] font-medium text-white transition-all duration-700 ease-in-out',
 					colorProgressBar,
 					{
 						'animate-stripes': clamped < 100

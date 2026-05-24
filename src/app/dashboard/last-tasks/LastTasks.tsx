@@ -1,43 +1,11 @@
 import { Task } from '@/components/ui/task/Task'
-import type { TTaskSortBy, TTaskStatus } from '@/types/task.types'
-import { useMemo, useState } from 'react'
-import { TASKS } from '../data/last-tasks.data'
+import { taskStore } from '@/stores/task.store'
+import { observer } from 'mobx-react-lite'
 import { LastTasksFilter } from './LastTasksFilter'
 import { LastTasksSort } from './LastTasksSort'
 
-export function LastTasks() {
-	// TODO: Create a custom hook to manage tasks state
-	const [status, setStatus] = useState<TTaskStatus | null>(null)
-	const [sortByDueDate, setSortByDueDate] = useState<TTaskSortBy>('asc')
-
-	const filteredTasks = useMemo(() => {
-		const filtered = !status
-			? TASKS
-			: TASKS.filter(task => {
-					switch (status) {
-						case 'not-started':
-							return task.subTasks.every(subTask => !subTask.isCompleted)
-
-						case 'in-progress':
-							return task.subTasks.some(subTask => !subTask.isCompleted)
-
-						case 'completed':
-							return task.subTasks.every(subTask => subTask.isCompleted)
-
-						default:
-							return true
-					}
-				})
-
-		const sortedTasks = filtered.sort((a, b) => {
-			const dateA = new Date(a.dueDate).getTime()
-			const dateB = new Date(b.dueDate).getTime()
-
-			return sortByDueDate === 'asc' ? dateA - dateB : dateB - dateA
-		})
-
-		return sortedTasks
-	}, [status, sortByDueDate])
+export const LastTasks = observer(() => {
+	const filteredTasks = taskStore.filteredTasks
 
 	return (
 		<div>
@@ -50,15 +18,9 @@ export function LastTasks() {
 				</h2>
 
 				<div className='flex items-center gap-4'>
-					<LastTasksFilter
-						status={status}
-						setStatus={setStatus}
-					/>
+					<LastTasksFilter />
 
-					<LastTasksSort
-						sortByDueDate={sortByDueDate}
-						setSortByDueDate={setSortByDueDate}
-					/>
+					<LastTasksSort />
 				</div>
 			</div>
 
@@ -78,4 +40,4 @@ export function LastTasks() {
 			)}
 		</div>
 	)
-}
+})
