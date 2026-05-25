@@ -1,4 +1,5 @@
 import type { ITask } from '@/types/task.types'
+import { setHours, setMinutes } from 'date-fns'
 import { USERS } from './users.data'
 
 export const TASKS: ITask[] = [
@@ -6,7 +7,11 @@ export const TASKS: ITask[] = [
 		id: '1',
 		title: 'Travel App User Flow',
 		icon: 'Plane',
-		dueDate: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000),
+		dueDate: {
+			date: new Date(),
+			startTime: setMinutes(setHours(new Date(), 9), 50),
+			endTime: setMinutes(setHours(new Date(), 12), 10)
+		},
 		comments: ['Comment 1', 'Comment 2', 'Comment 3'],
 		resources: ['', '', '', '', '', ''],
 		links: ['https://example.com/link1', 'https://example.com/link2'],
@@ -38,7 +43,11 @@ export const TASKS: ITask[] = [
 		id: '2',
 		title: 'E-commerce Site Redesign',
 		icon: 'ShoppingBasket',
-		dueDate: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000),
+		dueDate: {
+			date: new Date(),
+			startTime: setMinutes(setHours(new Date(), 13), 0),
+			endTime: setMinutes(setHours(new Date(), 15), 30)
+		},
 		comments: ['Initial design review', 'Feedback received'],
 		resources: ['', '', '', '', ''],
 		links: ['https://example.com/link3', 'https://example.com/link4'],
@@ -55,7 +64,9 @@ export const TASKS: ITask[] = [
 		id: '3',
 		title: 'Mobile App Feature Update',
 		icon: 'TabletSmartphone',
-		dueDate: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000),
+		dueDate: {
+			date: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000)
+		},
 		comments: ['Feature requirements defined'],
 		resources: ['', '', '', ''],
 		links: ['https://example.com/link5'],

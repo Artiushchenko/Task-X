@@ -8,7 +8,7 @@ interface Props {
 
 export default function DashboardLayout({ children, modals }: Props) {
 	return (
-		<div className='grid h-screen grid-cols-[230px_1fr]'>
+		<div className='grid min-h-screen grid-cols-[230px_1fr]'>
 			<Sidebar />
 
 			<main className='p-5'>{children}</main>

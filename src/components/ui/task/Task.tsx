@@ -2,6 +2,7 @@ import { SubTaskCreateModal } from '@/app/dashboard/last-tasks/create-subtask/Su
 import { Pages } from '@/config/pages'
 import type { ITask } from '@/types/task.types'
 import { ICON_MAP } from '@/utils/icon-map'
+import { isToday } from 'date-fns'
 import {
 	Edit2,
 	Image as LucideImage,
@@ -11,6 +12,7 @@ import {
 import { observer } from 'mobx-react-lite'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useMemo } from 'react'
 import { ProgressBar } from '../ProgressBar'
 
 interface Props {
@@ -22,6 +24,15 @@ export const Task = observer(({ task }: Props) => {
 	const totalCount = task.subTasks.length
 	const progress = Math.round((completedCount / totalCount) * 100)
 	const Icon = ICON_MAP[task.icon]
+
+	const dueDate = useMemo(
+		() =>
+			isToday(task.dueDate.date)
+				? 'Today'
+				: Math.ceil((+task.dueDate.date - Date.now()) / (1000 * 60 * 60 * 24)) +
+					' days',
+		[task.dueDate.date]
+	)
 
 	return (
 		<div className='bg-card rounded-xl p-3.5'>
@@ -37,13 +48,7 @@ export const Task = observer(({ task }: Props) => {
 						</div>
 
 						<div>
-							<span className='text-sm opacity-50'>
-								Due:{' '}
-								{Math.ceil(
-									(+task.dueDate - Date.now()) / (1000 * 60 * 60 * 24)
-								)}
-								{''} days
-							</span>
+							<span className='text-sm opacity-50'>Due: {dueDate}</span>
 						</div>
 					</div>
 				</div>

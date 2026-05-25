@@ -1,5 +1,6 @@
 'use client'
 
+import { TasksTimeline } from '@/components/tasks-timeline/TasksTimeline'
 import { LastTasks } from './last-tasks/LastTasks'
 import { ProjectStatisticsChart } from './project-chart/ProjectStatisticsChart'
 import { ProjectStatistics } from './project-statistics/ProjectStatistics'
@@ -27,9 +28,13 @@ export function Dashboard() {
 				</div>
 
 				<LastTasks />
+
+				<TasksTimeline />
 			</div>
 
-			<div className='flex h-screen items-center justify-center p-5'>CHAT</div>
+			<div className='flex min-h-screen items-center justify-center p-5'>
+				CHAT
+			</div>
 		</div>
 	)
 }
