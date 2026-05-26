@@ -1,6 +1,5 @@
 'use client'
 
-import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 import { Button } from '@/components/ui/button'
 import {
 	Form,
@@ -49,7 +48,7 @@ export const AuthForm = observer(({ type }: Props) => {
 	}
 
 	return (
-		<BubbleBackground className='absolute inset-0 flex h-full w-full items-center justify-center'>
+		<div className='absolute inset-0 flex h-full w-full items-center justify-center bg-linear-to-tr from-violet-400 to-amber-400'>
 			<div className='relative z-10 max-w-sm rounded-lg bg-white p-6 dark:bg-neutral-800'>
 				<h1 className='mb-5 text-2xl font-bold'>
 					{isLogin ? 'Login' : 'Register'}
@@ -100,6 +99,6 @@ export const AuthForm = observer(({ type }: Props) => {
 					</form>
 				</Form>
 			</div>
-		</BubbleBackground>
+		</div>
 	)
 })

@@ -47,7 +47,7 @@ export const SubTaskCreateModal = observer(({ taskId }: Props) => {
 			open={isOpenModal}
 			onOpenChange={setIsOpenModal}
 		>
-			<DialogTrigger className='bg-primary hover:bg-primary/90 rounded-full p-2 text-white transition-colors'>
+			<DialogTrigger className='bg-primary hover:bg-primary/90 rounded-full p-2 text-white transition-colors dark:text-neutral-800'>
 				<Plus size={18} />
 			</DialogTrigger>
 			<DialogContent className='max-w-sm!'>

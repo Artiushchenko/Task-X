@@ -32,7 +32,7 @@ export function ProgressBar({ progress }: Props) {
 		}
 
 		if (clamped >= 50) {
-			return 'bg-primary'
+			return 'bg-primary dark:bg-primary/70'
 		}
 
 		if (clamped >= 25) {

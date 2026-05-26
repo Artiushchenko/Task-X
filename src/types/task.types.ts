@@ -10,7 +10,7 @@ export interface ISubTask {
 
 export interface ITask extends Omit<ISubTask, 'isCompleted'> {
 	icon: IconName
-	color?: 'bg-violet-300' | 'bg-yellow-300' | 'bg-pink-300'
+	color?: string
 	dueDate: {
 		date: Date
 		startTime?: Date

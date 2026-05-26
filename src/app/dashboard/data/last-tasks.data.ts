@@ -7,7 +7,7 @@ export const TASKS: ITask[] = [
 		id: '1',
 		title: 'Travel App User Flow',
 		icon: 'Plane',
-		color: 'bg-violet-300',
+		color: 'bg-violet-300 dark:bg-violet-400/60',
 		dueDate: {
 			date: new Date(),
 			startTime: setMinutes(setHours(new Date(), 9), 50),
@@ -44,7 +44,7 @@ export const TASKS: ITask[] = [
 		id: '2',
 		title: 'E-commerce Site Redesign',
 		icon: 'ShoppingBasket',
-		color: 'bg-pink-300',
+		color: 'bg-pink-300 dark:bg-pink-400/60',
 		dueDate: {
 			date: new Date(),
 			startTime: setMinutes(setHours(new Date(), 13), 0),
@@ -66,7 +66,7 @@ export const TASKS: ITask[] = [
 		id: '3',
 		title: 'Mobile App Feature Update',
 		icon: 'TabletSmartphone',
-		color: 'bg-yellow-300',
+		color: 'bg-yellow-300 dark:bg-yellow-400/60',
 		dueDate: {
 			date: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000)
 		},

@@ -44,7 +44,7 @@
 	--foreground: #f5f5f5;
 	--background: #2a2a2a;
 	--bg-gradient: linear-gradient(to top, #1a1a1a, #121212);
-	--card: #1a1a1a;
+	--card: #212121;
 	--card-foreground: #f5f5f5;
 	--popover: #1a1a1a;
 	--popover-foreground: #f5f5f5;
@@ -132,11 +132,6 @@
 	.animate-stripes {
 		animation: stripes 1.5s linear infinite;
 	}
-
-	.bg-pattern {
-		background-color: #f4f1ff;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='105' viewBox='0 0 80 105'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23c5b8f7' fill-opacity='0.2'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-	}
 }
 
 html {
@@ -146,7 +141,6 @@ html {
 html,
 body {
 	font-family: var(--font-sans), sans-serif;
-	height: 100%;
 }
 
 body {

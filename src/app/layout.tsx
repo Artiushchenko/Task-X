@@ -29,6 +29,7 @@ export default function RootLayout({
 			lang='en'
 			suppressHydrationWarning
 			className={cn('font-sans', geist.variable)}
+			// TODO: Fix theme error
 		>
 			<body className={`${geist.variable} antialiased`}>
 				<Providers>{children}</Providers>

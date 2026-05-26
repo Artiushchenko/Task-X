@@ -42,7 +42,7 @@ export const Task = observer(({ task, isColor, isMinimal }: Props) => {
 			className={cn(
 				'bg-card rounded-xl p-3.5',
 				isColor && task.color,
-				isColor && 'text-white'
+				isColor && 'text-foreground'
 			)}
 		>
 			<div
@@ -55,7 +55,7 @@ export const Task = observer(({ task, isColor, isMinimal }: Props) => {
 					<div
 						className={cn(
 							'bg-primary/10 text-primary flex items-center justify-center rounded-full p-1.5',
-							isColor && 'text-primary bg-white'
+							isColor && 'text-primary bg-card'
 						)}
 					>
 						<Icon />
@@ -136,7 +136,7 @@ export const Task = observer(({ task, isColor, isMinimal }: Props) => {
 
 						<Link
 							href={DashboardPages.TASK_EDIT(task.id)}
-							className='border-primary text-primary hover:bg-primary/10 rounded-full border bg-white p-2 transition-colors'
+							className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
 						>
 							<Edit2 size={18} />
 						</Link>
