@@ -42,8 +42,12 @@ export const TasksTimeline = observer(() => {
 					))}
 				</div>
 
+				{/* TODO: Active vertical line by current time */}
+
 				<div className='relative h-72'>
 					{todayTasks.map(task => {
+						// TODO: Move this logic to the store
+
 						const start = getHours(task.dueDate.startTime)
 						const end = getHours(task.dueDate.endTime)
 
@@ -65,7 +69,11 @@ export const TasksTimeline = observer(() => {
 									width: `${widthPercent}%`
 								}}
 							>
-								<Task task={task} />
+								<Task
+									task={task}
+									isColor
+									isMinimal
+								/>
 							</div>
 						)
 					})}
