@@ -1,5 +1,5 @@
 import { SubTaskCreateModal } from '@/app/dashboard/last-tasks/create-subtask/SubTaskCreateModal'
-import { Pages } from '@/config/pages'
+import { DashboardPages } from '@/config/dashboard-pages'
 import type { ITask } from '@/types/task.types'
 import { ICON_MAP } from '@/utils/icon-map'
 import cn from 'clsx'
@@ -135,7 +135,7 @@ export const Task = observer(({ task, isColor, isMinimal }: Props) => {
 						<SubTaskCreateModal taskId={task.id} />
 
 						<Link
-							href={Pages.TASK_EDIT(task.id)}
+							href={DashboardPages.TASK_EDIT(task.id)}
 							className='border-primary text-primary hover:bg-primary/10 rounded-full border bg-white p-2 transition-colors'
 						>
 							<Edit2 size={18} />
