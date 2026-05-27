@@ -1,4 +1,7 @@
 import { Sidebar } from '@/components/layout/sidebar/Sidebar'
+import { PublicPages } from '@/config/public-pages'
+import { getServerAuth } from '@/utils/supabase/get-server-auth'
+import { redirect } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 interface Props {
@@ -6,7 +9,13 @@ interface Props {
 	modals: ReactNode
 }
 
-export default function DashboardLayout({ children, modals }: Props) {
+export default async function DashboardLayout({ children, modals }: Props) {
+	const user = await getServerAuth()
+
+	if (!user) {
+		redirect(PublicPages.LOGIN)
+	}
+
 	return (
 		<div className='grid min-h-screen grid-cols-[230px_1fr]'>
 			<Sidebar />

@@ -2,40 +2,40 @@
 
 import { Button } from '@/components/ui/button'
 import { PublicPages } from '@/config/public-pages'
-import { authStore } from '@/stores/auth.store'
+import { createClient } from '@/utils/supabase/client'
 import { LogOut } from 'lucide-react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 import { SidebarHeading } from './SidebarHeading'
 import { SidebarMenu } from './SidebarMenu'
 import { SidebarProfile } from './SidebarProfile'
 import { SidebarProjects } from './SidebarProjects'
 
-export const Sidebar = observer(() => {
+export const Sidebar = () => {
 	const router = useRouter()
+
+	async function signOut() {
+		const { error } = await createClient().auth.signOut()
+
+		if (!error) {
+			router.push(PublicPages.LOGIN)
+		}
+	}
 
 	return (
 		<aside className='bg-white p-5 dark:bg-neutral-800'>
-			{authStore.isLoggedIn && (
-				<>
-					<div className='flex items-center justify-between'>
-						<SidebarHeading title='Account' />
+			<div className='flex items-center justify-between'>
+				<SidebarHeading title='Account' />
 
-						<Button
-							variant='ghost'
-							className='opacity-30 transition-opacity hover:opacity-100'
-							onClick={() => {
-								authStore.logout()
-								router.push(PublicPages.LOGIN)
-							}}
-						>
-							<LogOut />
-						</Button>
-					</div>
+				<Button
+					variant='ghost'
+					className='opacity-30 transition-opacity hover:opacity-100'
+					onClick={signOut}
+				>
+					<LogOut />
+				</Button>
+			</div>
 
-					<SidebarProfile />
-				</>
-			)}
+			<SidebarProfile />
 
 			<SidebarHeading title='Main Menu' />
 			<SidebarMenu />
@@ -44,4 +44,4 @@ export const Sidebar = observer(() => {
 			<SidebarProjects />
 		</aside>
 	)
-})
+}

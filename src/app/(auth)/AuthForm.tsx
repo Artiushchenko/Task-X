@@ -10,55 +10,39 @@ import {
 	FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { DashboardPages } from '@/config/dashboard-pages'
-import { authStore } from '@/stores/auth.store'
 import { AuthSchema } from '@/zod-schemes/auth.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { observer } from 'mobx-react-lite'
-import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { signInWithEmail } from './actions'
 
-interface Props {
-	type: 'login' | 'register' | 'forgot-password' | 'reset-password'
-}
-
-export const AuthForm = observer(({ type }: Props) => {
-	const isLogin = type === 'login'
-
-	const router = useRouter()
-
+export const AuthForm = () => {
 	const form = useForm<z.infer<typeof AuthSchema>>({
 		resolver: zodResolver(AuthSchema)
 	})
 
 	const onSubmit = (data: z.infer<typeof AuthSchema>) => {
-		authStore.login()
+		signInWithEmail({ email: data.email }).then(() => {
+			form.reset()
 
-		form.reset()
-
-		if (authStore.isLoggedIn) {
 			toast.success(
-				isLogin ? 'Logged in successfully' : 'Registered successfully'
+				'Link to sign in has been sent to your email. Please check your inbox'
 			)
-
-			router.replace(DashboardPages.DASHBOARD)
-		}
+		})
 	}
 
 	return (
 		<div className='absolute inset-0 flex h-full w-full items-center justify-center bg-linear-to-tr from-violet-400 to-amber-400'>
 			<div className='relative z-10 max-w-sm rounded-lg bg-white p-6 dark:bg-neutral-800'>
-				<h1 className='mb-5 text-2xl font-bold'>
-					{isLogin ? 'Login' : 'Register'}
-				</h1>
+				<h1 className='mb-5 text-2xl font-bold'>Sign in with magic link</h1>
 
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
 						className='space-y-4'
 					>
+						{/* TODO: Fix bug */}
 						<FormField
 							control={form.control}
 							name='email'
@@ -77,28 +61,10 @@ export const AuthForm = observer(({ type }: Props) => {
 							)}
 						/>
 
-						<FormField
-							control={form.control}
-							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<Input
-											placeholder='Enter password'
-											type='password'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<Button type='submit'>Save</Button>
+						<Button type='submit'>Send link</Button>
 					</form>
 				</Form>
 			</div>
 		</div>
 	)
-})
+}
