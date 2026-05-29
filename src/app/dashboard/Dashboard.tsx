@@ -7,8 +7,15 @@ import { ProjectStatistics } from './project-statistics/ProjectStatistics'
 
 import { Heading } from '@/components/ui/Heading'
 import { SearchField } from '@/components/ui/search-field/SearchField'
+import { taskStore } from '@/stores/task.store'
+import type { TTask } from '@/types/task.types'
+import { useEffect } from 'react'
 
-export function Dashboard() {
+export function Dashboard({ tasks }: { tasks: TTask[] }) {
+	useEffect(() => {
+		taskStore.loadStoreFromServer(tasks)
+	}, [])
+
 	return (
 		<div className='grid grid-cols-[2.7fr_1fr]'>
 			<div>

@@ -2,12 +2,13 @@ import { ChevronDown } from 'lucide-react'
 import { PROFILE } from './data/profile.data'
 
 export function SidebarProfile() {
+	// TODO: Implement profile account
 	return (
 		<div className='mb-10 flex items-center gap-2.5'>
-			<div className='w-7 h-7 bg-primary rounded-full shrink-0' />
+			<div className='bg-primary h-7 w-7 shrink-0 rounded-full' />
 			<div>
 				<div className='font-medium'>{PROFILE.name}</div>
-				<div className='opacity-60 text-xs font-medium'>{PROFILE.email}</div>
+				<div className='text-xs font-medium opacity-60'>{PROFILE.email}</div>
 			</div>
 			<div className='ml-1'>
 				<ChevronDown

@@ -1,37 +1,11 @@
-import type { IProfile } from './profile.types'
+import type { Database } from './db.types'
 
-import type { IconName } from '@/utils/icon-map'
+export type TSubTask = Database['public']['Tables']['subtasks']['Row']
+export type TSubTaskFormData = Pick<TSubTask, 'title'>
 
-export interface ISubTask {
-	id: string
-	title: string
-	isCompleted: boolean
+export type TTask = Database['public']['Tables']['tasks']['Row'] & {
+	subtasks?: TSubTask[]
 }
-
-export interface ITask extends Omit<ISubTask, 'isCompleted'> {
-	icon: IconName
-	color?: string
-	dueDate: {
-		date: Date
-		startTime?: Date
-		endTime?: Date
-	}
-	users: IProfile[]
-	subTasks: ISubTask[]
-	comments: string[]
-	resources: string[]
-	links: string[]
-}
-
-export interface ITaskWithTime extends ITask {
-	dueDate: {
-		date: Date
-		startTime: Date
-		endTime: Date
-	}
-}
-
 export type TTaskStatus = 'not-started' | 'in-progress' | 'completed'
 export type TTaskSortBy = 'asc' | 'desc'
-export type TTaskFormData = Pick<ITask, 'title' | 'icon' | 'dueDate'>
-export type TSubTaskFormData = Pick<ISubTask, 'title'>
+export type TTaskFormData = Pick<TTask, 'title' | 'icon' | 'due_date'>

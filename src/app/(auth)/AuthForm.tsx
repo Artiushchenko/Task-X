@@ -23,13 +23,20 @@ export const AuthForm = () => {
 	})
 
 	const onSubmit = (data: z.infer<typeof AuthSchema>) => {
-		signInWithEmail({ email: data.email }).then(() => {
-			form.reset()
-
-			toast.success(
-				'Link to sign in has been sent to your email. Please check your inbox'
-			)
-		})
+		signInWithEmail({ email: data.email })
+			.then(() => {
+				toast.success(
+					'Link to sign in has been sent to your email. Please check your inbox'
+				)
+			})
+			.catch(error => {
+				toast.error(
+					`Failed to send sign-in link. Please try again later. Error: ${error.message}`
+				)
+			})
+			.finally(() => {
+				form.reset()
+			})
 	}
 
 	return (

@@ -23,6 +23,8 @@ export function ConfirmPage() {
 				token_hash: tokenHash
 			})
 
+			// TODO: Also create a profile for the user
+
 			if (error) {
 				return router.replace(PublicPages.LOGIN)
 			}

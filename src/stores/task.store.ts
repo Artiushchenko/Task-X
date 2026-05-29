@@ -1,8 +1,7 @@
 import { TASKS } from '@/app/dashboard/data/last-tasks.data'
 import type {
-	ITask,
-	ITaskWithTime,
 	TSubTaskFormData,
+	TTask,
 	TTaskFormData,
 	TTaskSortBy,
 	TTaskStatus
@@ -11,7 +10,7 @@ import { isToday } from 'date-fns'
 import { makeAutoObservable } from 'mobx'
 
 class TaskStore {
-	tasks: ITask[] = TASKS
+	tasks: TTask[] = TASKS
 	status: TTaskStatus | null = null
 	sortByDueDate: TTaskSortBy = 'asc'
 
@@ -19,16 +18,18 @@ class TaskStore {
 		makeAutoObservable(this)
 	}
 
+	loadStoreFromServer(tasks: TTask[]): void {
+		this.tasks = tasks
+	}
+
 	get todayTasks() {
 		return this.tasks.filter(
 			task =>
-				isToday(new Date(task.dueDate.date)) &&
-				task.dueDate.startTime &&
-				task.dueDate.endTime
-		) as ITaskWithTime[]
+				isToday(new Date(task.due_date)) && task.start_time && task.end_time
+		) as TTask[]
 	}
 
-	getTaskById(id: string): ITask | undefined {
+	getTaskById(id: string): TTask | undefined {
 		return this.tasks.find(task => task.id === id)
 	}
 
@@ -52,15 +53,15 @@ class TaskStore {
 			return
 		}
 
-		if (!task.subTasks) {
-			task.subTasks = []
+		if (!task.subtasks) {
+			task.subtasks = []
 		}
 
-		task.subTasks.push({
-			id: crypto.randomUUID(),
-			title: subTask.title,
-			isCompleted: false
-		})
+		// task.subtasks.push({
+		// 	id: crypto.randomUUID(),
+		// 	title: subTask.title,
+		// 	is_completed: false
+		// })
 	}
 
 	setStatus(status: TTaskStatus | null): void {
@@ -71,20 +72,20 @@ class TaskStore {
 		this.sortByDueDate = sortBy
 	}
 
-	get filteredTasks(): ITask[] {
+	get filteredTasks(): TTask[] {
 		let filtered = this.tasks
 
 		if (this.status) {
 			filtered = filtered.filter(task => {
 				switch (this.status) {
 					case 'not-started':
-						return task.subTasks.every(subTask => !subTask.isCompleted)
+						return task?.subtasks?.every(subTask => !subTask.is_completed)
 
 					case 'in-progress':
-						return task.subTasks.some(subTask => !subTask.isCompleted)
+						return task?.subtasks?.some(subTask => !subTask.is_completed)
 
 					case 'completed':
-						return task.subTasks.every(subTask => subTask.isCompleted)
+						return task?.subtasks?.every(subTask => subTask.is_completed)
 
 					default:
 						return true
@@ -93,8 +94,8 @@ class TaskStore {
 		}
 
 		return filtered.slice().sort((a, b) => {
-			const dateA = new Date(a.dueDate.date).getTime()
-			const dateB = new Date(b.dueDate.date).getTime()
+			const dateA = new Date(a.due_date).getTime()
+			const dateB = new Date(b.due_date).getTime()
 
 			return this.sortByDueDate === 'asc' ? dateA - dateB : dateB - dateA
 		})
