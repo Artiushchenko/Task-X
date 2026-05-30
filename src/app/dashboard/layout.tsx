@@ -14,7 +14,7 @@ export default async function DashboardLayout({ children, modals }: Props) {
 		<div className='grid min-h-screen grid-cols-[230px_1fr]'>
 			<Sidebar />
 
-			<main className='p-5'>{children}</main>
+			<main>{children}</main>
 
 			{modals}
 		</div>

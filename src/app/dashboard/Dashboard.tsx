@@ -10,6 +10,7 @@ import { SearchField } from '@/components/ui/search-field/SearchField'
 import { taskStore } from '@/stores/task.store'
 import type { TTask } from '@/types/task.types'
 import { useEffect } from 'react'
+import { Chat } from './chat/Chat'
 
 export function Dashboard({ tasks }: { tasks: TTask[] }) {
 	useEffect(() => {
@@ -17,8 +18,8 @@ export function Dashboard({ tasks }: { tasks: TTask[] }) {
 	}, [])
 
 	return (
-		<div className='grid grid-cols-[2.7fr_1fr]'>
-			<div>
+		<div className='grid h-screen grid-cols-[3.5fr_1fr]'>
+			<div className='overflow-y-auto p-5'>
 				<div className='mb-6 flex items-center justify-between'>
 					<Heading>Dashboard</Heading>
 
@@ -28,7 +29,7 @@ export function Dashboard({ tasks }: { tasks: TTask[] }) {
 					/>
 				</div>
 
-				<div className='mb-7 grid grid-cols-[30%_70%] gap-5'>
+				<div className='mb-7 grid grid-cols-[1fr_3.5fr] gap-4'>
 					<ProjectStatistics />
 
 					<ProjectStatisticsChart />
@@ -39,9 +40,7 @@ export function Dashboard({ tasks }: { tasks: TTask[] }) {
 				<TasksTimeline />
 			</div>
 
-			<div className='flex min-h-screen items-center justify-center p-5'>
-				CHAT
-			</div>
+			<Chat />
 		</div>
 	)
 }

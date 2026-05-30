@@ -9,8 +9,8 @@ const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
 	icons: {
-		icon: '/images/icons/favicon.svg',
-		shortcut: '/images/icons/favicon.svg'
+		icon: '/images/favicon.svg',
+		shortcut: '/images/favicon.svg'
 	},
 	title: {
 		absolute: SITE_NAME,
