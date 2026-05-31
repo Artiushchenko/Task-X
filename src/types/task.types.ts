@@ -1,11 +1,24 @@
+import type {
+	getServerTasks,
+	getServerTodayTasks
+} from '@/services/tasks/task-server.service'
 import type { Database } from './db.types'
 
+export type TGetTasksResponse = NonNullable<
+	Awaited<ReturnType<typeof getServerTasks>>['data']
+>
+export type TGetTodayTasksResponse = NonNullable<
+	Awaited<ReturnType<typeof getServerTodayTasks>>['data']
+>
+
 export type TSubTask = Database['public']['Tables']['subtasks']['Row']
-export type TSubTaskFormData = Pick<TSubTask, 'title'>
+export type TSubTaskFormData =
+	Database['public']['Tables']['subtasks']['Insert']
 
 export type TTask = Database['public']['Tables']['tasks']['Row'] & {
-	subtasks?: TSubTask[]
+	subtasks: TSubTask[]
+	task_participants: TGetTasksResponse[0]['task_participants']
 }
 export type TTaskStatus = 'not-started' | 'in-progress' | 'completed'
 export type TTaskSortBy = 'asc' | 'desc'
-export type TTaskFormData = Pick<TTask, 'title' | 'icon' | 'due_date'>
+export type TTaskFormData = Database['public']['Tables']['tasks']['Update']

@@ -26,12 +26,18 @@ export const AuthForm = () => {
 		signInWithEmail({ email: data.email })
 			.then(() => {
 				toast.success(
-					'Link to sign in has been sent to your email. Please check your inbox'
+					'Link to sign in has been sent to your email. Please check your inbox',
+					{
+						id: 'auth-success'
+					}
 				)
 			})
 			.catch(error => {
 				toast.error(
-					`Failed to send sign-in link. Please try again later. Error: ${error.message}`
+					`Failed to send sign-in link. Please try again later. Error: ${error.message}`,
+					{
+						id: 'auth-error'
+					}
 				)
 			})
 			.finally(() => {

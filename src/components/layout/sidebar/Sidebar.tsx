@@ -28,7 +28,7 @@ export const Sidebar = () => {
 
 				<Button
 					variant='ghost'
-					className='opacity-30 transition-opacity hover:opacity-100'
+					className='p-0! opacity-30 transition-opacity hover:opacity-100'
 					onClick={signOut}
 				>
 					<LogOut />

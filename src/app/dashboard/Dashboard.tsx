@@ -8,11 +8,19 @@ import { ProjectStatistics } from './project-statistics/ProjectStatistics'
 import { Heading } from '@/components/ui/Heading'
 import { SearchField } from '@/components/ui/search-field/SearchField'
 import { taskStore } from '@/stores/task.store'
-import type { TTask } from '@/types/task.types'
+import type {
+	TGetTasksResponse,
+	TGetTodayTasksResponse
+} from '@/types/task.types'
 import { useEffect } from 'react'
 import { Chat } from './chat/Chat'
 
-export function Dashboard({ tasks }: { tasks: TTask[] }) {
+interface Props {
+	tasks: TGetTasksResponse
+	todayTasks: TGetTodayTasksResponse
+}
+
+export function Dashboard({ tasks, todayTasks }: Props) {
 	useEffect(() => {
 		taskStore.loadStoreFromServer(tasks)
 	}, [])
@@ -37,7 +45,7 @@ export function Dashboard({ tasks }: { tasks: TTask[] }) {
 
 				<LastTasks />
 
-				<TasksTimeline />
+				<TasksTimeline todayTasks={todayTasks} />
 			</div>
 
 			<Chat />

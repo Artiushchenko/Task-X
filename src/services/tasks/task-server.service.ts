@@ -2,9 +2,15 @@
 
 import { createClientFromServer } from '@/utils/supabase/server'
 
-export async function taskServerGetAll() {
-	return (await createClientFromServer()).from('tasks').select(`*, subtasks(*)`)
+export async function getServerTasks() {
+	return (await createClientFromServer())
+		.from('tasks')
+		.select(`*, subtasks(*), task_participants(profiles(*))`)
 }
 
-// update(task: TTaskFormData)
-// addSubTask
+export async function getServerTodayTasks() {
+	return (await createClientFromServer())
+		.from('tasks')
+		.select(`*, subtasks(*), task_participants(profiles(*))`)
+		.eq('due_date', new Date().toISOString().split('T')[0])
+}

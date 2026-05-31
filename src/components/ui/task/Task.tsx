@@ -2,6 +2,7 @@ import { SubTaskCreateModal } from '@/app/dashboard/last-tasks/create-subtask/Su
 import { DashboardPages } from '@/config/dashboard-pages'
 import type { TTask } from '@/types/task.types'
 import { ICON_MAP } from '@/utils/icon-map'
+import { parseTime } from '@/utils/parse-time'
 import cn from 'clsx'
 import { format, isToday } from 'date-fns'
 import {
@@ -10,7 +11,7 @@ import {
 	Link as LucideLink,
 	MessageSquareMore
 } from 'lucide-react'
-import { observer } from 'mobx-react-lite'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { ProgressBar } from '../ProgressBar'
@@ -21,18 +22,19 @@ interface Props {
 	isMinimal?: boolean
 }
 
-export const Task = observer(({ task, isColor, isMinimal }: Props) => {
+export const Task = ({ task, isColor, isMinimal }: Props) => {
 	const completedCount =
 		task?.subtasks?.filter(st => st.is_completed).length || 0
 	const totalCount = task?.subtasks?.length || 0
 	const progress = Math.round((completedCount / totalCount) * 100)
 	const Icon = ICON_MAP[task.icon as keyof typeof ICON_MAP]
+	const formattedDate = new Date(task.due_date)
 
 	const dueDate = useMemo(
 		() =>
-			isToday(task.due_date)
+			isToday(formattedDate)
 				? 'Today'
-				: Math.ceil((+task.due_date - Date.now()) / (1000 * 60 * 60 * 24)) +
+				: Math.ceil((+formattedDate - Date.now()) / (1000 * 60 * 60 * 24)) +
 					' days',
 		[task.due_date]
 	)
@@ -70,10 +72,10 @@ export const Task = observer(({ task, isColor, isMinimal }: Props) => {
 							<span
 								className={cn('text-sm opacity-50', isColor && 'opacity-75')}
 							>
-								{isMinimal ? (
+								{isMinimal && task.start_time && task.end_time ? (
 									<>
-										{format(task.start_time!, 'ha')} -{' '}
-										{format(task.end_time!, 'ha')}
+										{format(parseTime(task.due_date, task.start_time), 'ha')} -{' '}
+										{format(parseTime(task.due_date, task.end_time), 'ha')}
 									</>
 								) : (
 									<>Due: {dueDate}</>
@@ -84,19 +86,19 @@ export const Task = observer(({ task, isColor, isMinimal }: Props) => {
 				</div>
 
 				<div className='flex items-center -space-x-3'>
-					{/* TODO: Users */}
-
-					{/* {task.users.map(user => (
-						<div key={user.id}>
-							<Image
-								src={user.avatarPath || ''}
-								alt={user.name}
-								width={36}
-								height={36}
-								className='rounded-full border border-white dark:border-neutral-800'
-							/>
-						</div>
-					))} */}
+					{task.task_participants
+						.filter(u => Boolean(u.profiles))
+						.map(({ profiles }) => (
+							<div key={profiles.id}>
+								<Image
+									src={profiles?.avatar_path || ''}
+									alt={profiles?.name || ''}
+									width={36}
+									height={36}
+									className='rounded-full border border-white dark:border-neutral-800'
+								/>
+							</div>
+						))}
 				</div>
 			</div>
 
@@ -147,4 +149,4 @@ export const Task = observer(({ task, isColor, isMinimal }: Props) => {
 			)}
 		</div>
 	)
-})
+}
