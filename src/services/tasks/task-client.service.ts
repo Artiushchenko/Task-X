@@ -1,7 +1,56 @@
 'use client'
 
 import type { Database } from '@/types/db.types'
+import type { TTask, TTaskSortBy, TTaskStatus } from '@/types/task.types'
 import { createClient } from '@/utils/supabase/client'
+
+function filterTasks(tasks: TTask[], status: TTaskStatus) {
+	return tasks.filter(task => {
+		switch (status) {
+			case 'not-started':
+				return task?.subtasks?.every(subTask => !subTask.is_completed)
+
+			case 'in-progress':
+				return task?.subtasks?.some(subTask => !subTask.is_completed)
+
+			case 'completed':
+				return task?.subtasks?.every(subTask => subTask.is_completed)
+
+			default:
+				return true
+		}
+	})
+}
+
+export async function getClientTasks({
+	status,
+	sortByDueDate
+}: {
+	status?: TTaskStatus
+	sortByDueDate?: TTaskSortBy
+}) {
+	let query = createClient()
+		.from('tasks')
+		.select(`*, subtasks(*), task_participants(profiles(*))`)
+
+	if (sortByDueDate) {
+		query = query.order('due_date', {
+			ascending: sortByDueDate === 'asc'
+		})
+	}
+
+	const { data, error } = await query
+
+	if (error || !data) {
+		throw new Error(error.message || 'Failed to fetch tasks')
+	}
+
+	if (status) {
+		return filterTasks(data, status)
+	}
+
+	return data
+}
 
 export async function taskClientGetById(id: string) {
 	const { data, error } = await createClient()

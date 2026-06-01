@@ -19,7 +19,10 @@ import { signInWithEmail } from './actions'
 
 export const AuthForm = () => {
 	const form = useForm<z.infer<typeof AuthSchema>>({
-		resolver: zodResolver(AuthSchema)
+		resolver: zodResolver(AuthSchema),
+		defaultValues: {
+			email: ''
+		}
 	})
 
 	const onSubmit = (data: z.infer<typeof AuthSchema>) => {
@@ -55,7 +58,6 @@ export const AuthForm = () => {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className='space-y-4'
 					>
-						{/* TODO: Fix bug */}
 						<FormField
 							control={form.control}
 							name='email'

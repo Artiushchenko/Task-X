@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { PublicPages } from '@/config/public-pages'
+import type { getServerProfile } from '@/services/profile/profile-server.service'
 import { createClient } from '@/utils/supabase/client'
 import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -10,7 +11,11 @@ import { SidebarMenu } from './SidebarMenu'
 import { SidebarProfile } from './SidebarProfile'
 import { SidebarProjects } from './SidebarProjects'
 
-export const Sidebar = () => {
+export const Sidebar = ({
+	data
+}: {
+	data: Awaited<ReturnType<typeof getServerProfile>>
+}) => {
 	const router = useRouter()
 
 	async function signOut() {
@@ -22,7 +27,7 @@ export const Sidebar = () => {
 	}
 
 	return (
-		<aside className='bg-white p-5 dark:bg-neutral-800'>
+		<aside className='bg-white p-4 dark:bg-neutral-800'>
 			<div className='flex items-center justify-between'>
 				<SidebarHeading title='Account' />
 
@@ -35,7 +40,7 @@ export const Sidebar = () => {
 				</Button>
 			</div>
 
-			<SidebarProfile />
+			<SidebarProfile data={data} />
 
 			<SidebarHeading title='Main Menu' />
 			<SidebarMenu />

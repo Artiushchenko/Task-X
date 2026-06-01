@@ -24,7 +24,7 @@ import type { Database } from '@/types/db.types'
 import { ICON_MAP, ICON_NAMES } from '@/utils/icon-map'
 import { TaskSchema } from '@/zod-schemes/task.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -59,7 +59,12 @@ export const TaskEditModalClient = ({ id }: Props) => {
 	}, [])
 
 	const form = useForm<z.infer<typeof TaskSchema>>({
-		resolver: zodResolver(TaskSchema)
+		resolver: zodResolver(TaskSchema),
+		defaultValues: {
+			title: '',
+			due_date: undefined,
+			icon: undefined
+		}
 	})
 
 	const { isSuccess, data } = useQuery({
@@ -69,8 +74,7 @@ export const TaskEditModalClient = ({ id }: Props) => {
 	})
 
 	useEffect(() => {
-		if (!isSuccess || !data) {
-			toast.error('Task not found')
+		if (!data) {
 			return
 		}
 
@@ -81,6 +85,8 @@ export const TaskEditModalClient = ({ id }: Props) => {
 		})
 	}, [isSuccess])
 
+	const queryClient = useQueryClient()
+
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['task', 'update', id],
 		mutationFn: (data: Database['public']['Tables']['tasks']['Update']) =>
@@ -88,6 +94,7 @@ export const TaskEditModalClient = ({ id }: Props) => {
 		onSuccess: () => {
 			toast.success('Task updated successfully')
 			closeModal()
+			// TODO: Invalidate queries if needed
 		},
 		onError: error => {
 			toast.error('Failed to update task', {
@@ -138,7 +145,7 @@ export const TaskEditModalClient = ({ id }: Props) => {
 								)}
 							/>
 
-							<Controller
+							<FormField
 								control={form.control}
 								name='due_date'
 								render={({ field: { onChange, value } }) => (

@@ -7,12 +7,10 @@ import { ProjectStatistics } from './project-statistics/ProjectStatistics'
 
 import { Heading } from '@/components/ui/Heading'
 import { SearchField } from '@/components/ui/search-field/SearchField'
-import { taskStore } from '@/stores/task.store'
 import type {
 	TGetTasksResponse,
 	TGetTodayTasksResponse
 } from '@/types/task.types'
-import { useEffect } from 'react'
 import { Chat } from './chat/Chat'
 
 interface Props {
@@ -21,10 +19,6 @@ interface Props {
 }
 
 export function Dashboard({ tasks, todayTasks }: Props) {
-	useEffect(() => {
-		taskStore.loadStoreFromServer(tasks)
-	}, [])
-
 	return (
 		<div className='grid h-screen grid-cols-[3.5fr_1fr]'>
 			<div className='overflow-y-auto p-5'>
@@ -43,7 +37,7 @@ export function Dashboard({ tasks, todayTasks }: Props) {
 					<ProjectStatisticsChart />
 				</div>
 
-				<LastTasks />
+				<LastTasks tasks={tasks} />
 
 				<TasksTimeline todayTasks={todayTasks} />
 			</div>

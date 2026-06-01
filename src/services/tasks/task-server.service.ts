@@ -6,6 +6,9 @@ export async function getServerTasks() {
 	return (await createClientFromServer())
 		.from('tasks')
 		.select(`*, subtasks(*), task_participants(profiles(*))`)
+		.order('due_date', {
+			ascending: true
+		})
 }
 
 export async function getServerTodayTasks() {
