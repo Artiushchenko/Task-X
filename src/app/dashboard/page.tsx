@@ -1,3 +1,4 @@
+import { getServerProfile } from '@/services/profile/profile-server.service'
 import {
 	getServerTasks,
 	getServerTodayTasks
@@ -15,10 +16,13 @@ export default async function Page() {
 		getServerTodayTasks()
 	])
 
+	const data = await getServerProfile()
+
 	return (
 		<Dashboard
 			tasks={tasks.data || []}
 			todayTasks={todayTasks.data || []}
+			userId={data.id}
 		/>
 	)
 }

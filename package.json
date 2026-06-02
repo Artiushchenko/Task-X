@@ -7,7 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"ts-check": "tsc --noEmit"
+		"ts-check": "tsc --noEmit",
+		"generate-db-types": "supabase gen types typescript --project-id \"mppdygwrzrsnqmilpuca\" --schema public > src/types/db.types.ts"
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.5.0",

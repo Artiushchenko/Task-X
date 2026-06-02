@@ -1,41 +1,94 @@
-import cn from 'clsx'
+import type { TChatMessageWithProfile } from '@/types/chat.types'
+import { createClient } from '@/utils/supabase/client'
 import { Paperclip, Send } from 'lucide-react'
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 import { USERS } from '../data/users.data'
+import { ChatMessage } from './ChatMessage'
 
-const messages = [
-	{
-		id: 1,
-		text: "Morning! I've been working on the design elements",
-		author: USERS[3],
-		own: false,
-		time: '09.28 am'
-	},
-	{
-		id: 2,
-		text: "That's great to hear! I've been focusing on market research",
-		author: USERS[6],
-		own: true,
-		time: '09.40 am'
-	},
-	{
-		id: 3,
-		text: "Morning! I've been working on the",
-		author: USERS[4],
-		own: false,
-		time: '09.47 am'
+interface Props {
+	userId: string
+}
+
+export function Chat({ userId }: Props) {
+	const supabase = useRef(createClient())
+
+	const [messages, setMessages] = useState<TChatMessageWithProfile[]>([])
+	const [newMessage, setNewMessage] = useState('')
+
+	useEffect(() => {
+		supabase.current
+			.from('chat_messages')
+			.select(
+				`*,
+				profile:profiles (
+					id,	
+					name, 
+					avatar_path
+				)`
+			)
+			.order('created_at', { ascending: true })
+			.then(({ data }) => {
+				if (!data) {
+					return
+				}
+
+				setMessages(data)
+			})
+
+		const channel = supabase.current
+			.channel('chat_messages')
+			.on(
+				'postgres_changes',
+				{ event: 'INSERT', schema: 'public', table: 'chat_messages' },
+				async payload => {
+					const { data } = await supabase.current
+						.from('chat_messages')
+						.select(
+							`*,
+								profile:profiles (
+									id,	
+									name,
+									avatar_path
+								)
+							`
+						)
+						.eq('id', payload.new.id)
+						.single()
+
+					if (data) {
+						setMessages(prev => [...prev, data])
+					}
+				}
+			)
+			.subscribe()
+
+		return () => {
+			supabase.current.removeChannel(channel)
+		}
+	}, [])
+
+	const sendMessage = async () => {
+		if (!newMessage.trim()) {
+			return
+		}
+
+		await supabase.current.from('chat_messages').insert({
+			user_id: userId,
+			text: newMessage
+		})
+
+		setNewMessage('')
 	}
-]
 
-export function Chat() {
 	return (
 		<div className='flex h-screen flex-col'>
 			<Image
 				alt='Chat'
 				src='/images/chat-image.png'
-				width={354}
-				height={531}
-				className='chat-header-image shrink-0'
+				width={350}
+				height={530}
+				className='chat-header-image w-full shrink-0 object-cover'
 			/>
 
 			<div className='flex min-h-0 flex-1 flex-col'>
@@ -61,60 +114,11 @@ export function Chat() {
 				<div className='flex-1 overflow-y-auto bg-[#3c3495] px-3.5 py-3'>
 					<div className='flex flex-col gap-4.5'>
 						{messages.map(msg => (
-							<div
+							<ChatMessage
 								key={msg.id}
-								className={cn(
-									'flex items-end gap-2',
-									msg.own ? 'justify-end' : 'justify-start'
-								)}
-							>
-								{!msg.own && (
-									<Image
-										alt={msg.author.name}
-										src={msg.author.avatarPath || ''}
-										width={40}
-										height={40}
-										className='rounded-full'
-									/>
-								)}
-
-								<div className='max-w-[75%]'>
-									<div className='mb-0.5 text-xs text-white'>
-										{msg.own ? (
-											<span className='space-x-1'>
-												<span className='opacity-60'>{msg.time}</span>{' '}
-												<span className='font-medium'>Me</span>
-											</span>
-										) : (
-											<span className='space-x-1'>
-												<span className='font-medium'>{msg.author.name}</span>{' '}
-												<span className='opacity-60'>{msg.time}</span>
-											</span>
-										)}
-									</div>
-
-									<div
-										className={cn(
-											'rounded-xl px-4 py-2 text-sm text-white',
-											msg.own
-												? 'rounded-br-none bg-[#614bee]'
-												: 'rounded-bl-none bg-[#5b51b1]'
-										)}
-									>
-										{msg.text}
-									</div>
-								</div>
-
-								{msg.own && (
-									<Image
-										alt={msg.author.name}
-										src={msg.author.avatarPath || ''}
-										width={40}
-										height={40}
-										className='rounded-full'
-									/>
-								)}
-							</div>
+								message={msg}
+								userId={userId}
+							/>
 						))}
 					</div>
 				</div>
@@ -127,11 +131,16 @@ export function Chat() {
 
 					<input
 						type='text'
+						value={newMessage}
+						onChange={e => setNewMessage(e.target.value)}
 						placeholder='Type here...'
 						className='w-full bg-transparent p-2 text-white placeholder:text-[#b2aedf] focus:outline-none'
 					/>
 
-					<button className='flex size-9 shrink-0 items-center justify-center rounded-full bg-[#9383d8] text-white opacity-90 transition-colors hover:opacity-100'>
+					<button
+						className='flex size-9 shrink-0 items-center justify-center rounded-full bg-[#9383d8] text-white opacity-90 transition-colors hover:opacity-100'
+						onClick={sendMessage}
+					>
 						<Send size={18} />
 					</button>
 				</div>

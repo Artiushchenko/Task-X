@@ -16,9 +16,10 @@ import { Chat } from './chat/Chat'
 interface Props {
 	tasks: TGetTasksResponse
 	todayTasks: TGetTodayTasksResponse
+	userId: string
 }
 
-export function Dashboard({ tasks, todayTasks }: Props) {
+export function Dashboard({ tasks, todayTasks, userId }: Props) {
 	return (
 		<div className='grid h-screen grid-cols-[3.5fr_1fr]'>
 			<div className='overflow-y-auto p-5'>
@@ -42,7 +43,7 @@ export function Dashboard({ tasks, todayTasks }: Props) {
 				<TasksTimeline todayTasks={todayTasks} />
 			</div>
 
-			<Chat />
+			<Chat userId={userId} />
 		</div>
 	)
 }
