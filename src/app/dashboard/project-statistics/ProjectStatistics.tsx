@@ -1,13 +1,18 @@
-import { PROJECT_STATISTICS_DATA } from '../data/project-statistics.data'
+import type { TGetProjectsStatsResponse } from '@/types/statistics.types'
 import { ProjectStatisticsCard } from './ProjectStatisticsCard'
 
-export function ProjectStatistics() {
+interface Props {
+	projectsStats: TGetProjectsStatsResponse
+}
+
+export function ProjectStatistics({ projectsStats }: Props) {
 	return (
 		<div className='space-y-4'>
-			{PROJECT_STATISTICS_DATA.map(projectStatistics => (
+			{projectsStats.map((projectStatistics, index) => (
 				<ProjectStatisticsCard
 					key={projectStatistics.id}
 					projectStatistics={projectStatistics}
+					isLast={index === projectsStats.length - 1}
 				/>
 			))}
 		</div>

@@ -1,17 +1,27 @@
 'use client'
 
+import { getClientProjectsChartData } from '@/services/statistics/chart/projects-chart-client.service'
+import type { TClientProjectsChartDataResponse } from '@/types/statistics.types'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { monthlyData, yearlyData } from '../data/project-chart.data'
 import { ProjectChart } from './ProjectChart'
 import { ProjectChartHeader } from './ProjectChartHeader'
 
-export function ProjectStatisticsChart() {
+interface Props {
+	projectsChartData: TClientProjectsChartDataResponse
+}
+
+export function ProjectStatisticsChart({ projectsChartData }: Props) {
 	const [selectedRange, setSelectedRange] = useState<ITimeRange>({
 		label: 'Yearly',
 		value: 'yearly'
 	})
 
-	const chartData = selectedRange.value === 'yearly' ? yearlyData : monthlyData
+	const { data } = useQuery({
+		queryKey: ['projects-stats-chart', selectedRange.value],
+		queryFn: () => getClientProjectsChartData(selectedRange.value),
+		initialData: projectsChartData
+	})
 
 	return (
 		<div className='bg-card h-full rounded-2xl p-5'>
@@ -20,7 +30,7 @@ export function ProjectStatisticsChart() {
 				selectedRange={selectedRange}
 			/>
 
-			<ProjectChart data={chartData} />
+			<ProjectChart data={data || []} />
 		</div>
 	)
 }
