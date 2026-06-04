@@ -37,7 +37,7 @@ export function ProjectChart({ data }: Props) {
 	return (
 		<div
 			role='img'
-			aria-label={`Project activity chart showing ${data.length} data points with maximum value of ${maxData?.value || 0} in ${maxData?.period || 'period'}`}
+			aria-label='Projects activity chart showing data points over time'
 		>
 			<ResponsiveContainer
 				width='100%'

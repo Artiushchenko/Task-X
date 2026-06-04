@@ -1,4 +1,4 @@
-import cn from 'clsx'
+import { cn } from '@/utils'
 import { CheckCircle } from 'lucide-react'
 import { useMemo } from 'react'
 

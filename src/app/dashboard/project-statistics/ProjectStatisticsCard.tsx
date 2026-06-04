@@ -1,6 +1,6 @@
 import type { TGetProjectsStatsResponse } from '@/types/statistics.types'
+import { cn } from '@/utils'
 import { formatMinutes } from '@/utils/format-minutes'
-import cn from 'clsx'
 import Image from 'next/image'
 
 interface Props {
@@ -32,6 +32,7 @@ export function ProjectStatisticsCard({ projectStatistics, isLast }: Props) {
 						alt={projectStatistics.label}
 						width={80}
 						height={80}
+						draggable={false}
 					/>
 				</div>
 			</div>

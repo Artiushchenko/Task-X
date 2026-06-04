@@ -3,9 +3,9 @@ import { assignTaskRows } from '@/utils/timeline/assign-task-rows'
 import Image from 'next/image'
 
 import { useTimelineHeight } from '@/hooks/useTimelineHeight'
+import { cn } from '@/utils'
 import { getTimelineHours } from '@/utils/timeline/get-hours'
 import { getTimelinePoints } from '@/utils/timeline/get-timeline-points'
-import cn from 'clsx'
 import TaskTimelineCard from './TaskTimelineCard'
 
 export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
@@ -42,6 +42,7 @@ export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
 								width={40}
 								height={40}
 								className='rounded-full border border-white dark:border-neutral-800'
+								draggable={false}
 							/>
 						</div>
 					))}

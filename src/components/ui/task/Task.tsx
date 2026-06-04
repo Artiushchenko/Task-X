@@ -3,9 +3,9 @@ import { Brush } from '@/components/animate-ui/icons/brush'
 import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { DashboardPages } from '@/config/dashboard-pages'
 import type { TTask } from '@/types/task.types'
+import { cn } from '@/utils'
 import { ICON_MAP } from '@/utils/icon-map'
 import { parseTime } from '@/utils/parse-time'
-import cn from 'clsx'
 import { format, isToday } from 'date-fns'
 import {
 	Image as LucideImage,
@@ -97,6 +97,7 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 									width={36}
 									height={36}
 									className='rounded-full border border-white dark:border-neutral-800'
+									draggable={false}
 								/>
 							</div>
 						))}

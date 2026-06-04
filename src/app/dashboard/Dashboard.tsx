@@ -15,7 +15,7 @@ import type {
 	TGetTasksResponse,
 	TGetTodayTasksResponse
 } from '@/types/task.types'
-import cn from 'clsx'
+import { cn } from '@/utils'
 import { Chat } from './chat/Chat'
 
 interface Props {

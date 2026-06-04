@@ -1,5 +1,5 @@
 import type { TChatMessageWithProfile } from '@/types/chat.types'
-import cn from 'clsx'
+import { cn } from '@/utils'
 import { format } from 'date-fns'
 import Image from 'next/image'
 import { memo } from 'react'
@@ -27,6 +27,7 @@ function ChatMessage({ message, userId }: Props) {
 					width={40}
 					height={40}
 					className='rounded-full'
+					draggable={false}
 				/>
 			)}
 
@@ -72,6 +73,7 @@ function ChatMessage({ message, userId }: Props) {
 					width={40}
 					height={40}
 					className='rounded-full'
+					draggable={false}
 				/>
 			)}
 		</div>

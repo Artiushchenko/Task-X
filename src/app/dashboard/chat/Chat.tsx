@@ -31,6 +31,7 @@ export function Chat({ userId }: Props) {
 				width={350}
 				height={530}
 				className='chat-header-image w-full shrink-0 object-cover'
+				draggable={false}
 			/>
 
 			<div className='flex min-h-0 flex-1 flex-col'>
@@ -41,6 +42,7 @@ export function Chat({ userId }: Props) {
 						width={40}
 						height={40}
 						className='rounded-full'
+						draggable={false}
 					/>
 
 					<div className='leading-snug text-white'>
