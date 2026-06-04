@@ -1,4 +1,6 @@
 import { SubTaskCreateModal } from '@/app/dashboard/last-tasks/create-subtask/SubTaskCreateModal'
+import { Brush } from '@/components/animate-ui/icons/brush'
+import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { DashboardPages } from '@/config/dashboard-pages'
 import type { TTask } from '@/types/task.types'
 import { ICON_MAP } from '@/utils/icon-map'
@@ -6,7 +8,6 @@ import { parseTime } from '@/utils/parse-time'
 import cn from 'clsx'
 import { format, isToday } from 'date-fns'
 import {
-	Edit2,
 	Image as LucideImage,
 	Link as LucideLink,
 	MessageSquareMore
@@ -135,15 +136,19 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 					</div>
 
 					<div className='flex items-center gap-2'>
-						{/* TODO: Add animate icon */}
 						<SubTaskCreateModal taskId={task.id} />
 
-						<Link
-							href={DashboardPages.TASK_EDIT(task.id)}
-							className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
+						<AnimateIcon
+							animateOnHover
+							asChild
 						>
-							<Edit2 size={18} />
-						</Link>
+							<Link
+								href={DashboardPages.TASK_EDIT(task.id)}
+								className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
+							>
+								<Brush size={18} />
+							</Link>
+						</AnimateIcon>
 					</div>
 				</div>
 			)}

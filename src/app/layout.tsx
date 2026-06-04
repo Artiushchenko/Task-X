@@ -1,11 +1,10 @@
 import { SITE_NAME } from '@/constants'
-import { cn } from '@/utils'
 import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
 import './globals.css'
 import { Providers } from './Providers'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
+const font = Geist({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
 	icons: {
@@ -28,10 +27,8 @@ export default function RootLayout({
 		<html
 			lang='en'
 			suppressHydrationWarning
-			className={cn('font-sans', geist.variable)}
-			// TODO: Fix theme error
 		>
-			<body className={`${geist.variable} antialiased`}>
+			<body className={`${font.variable} antialiased`}>
 				<Providers>{children}</Providers>
 			</body>
 		</html>

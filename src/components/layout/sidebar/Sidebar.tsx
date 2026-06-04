@@ -1,10 +1,11 @@
 'use client'
 
+import { AnimateIcon } from '@/components/animate-ui/icons/icon'
+import { LogOut } from '@/components/animate-ui/icons/log-out'
 import { Button } from '@/components/ui/button'
 import { PublicPages } from '@/config/public-pages'
 import type { getServerProfile } from '@/services/profile/profile-server.service'
 import { createClient } from '@/utils/supabase/client'
-import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { SidebarHeading } from './SidebarHeading'
 import { SidebarMenu } from './SidebarMenu'
@@ -31,13 +32,15 @@ export const Sidebar = ({
 			<div className='flex items-center justify-between'>
 				<SidebarHeading title='Account' />
 
-				<Button
-					variant='ghost'
-					className='p-0! opacity-30 transition-opacity hover:opacity-100'
-					onClick={signOut}
-				>
-					<LogOut />
-				</Button>
+				<AnimateIcon animateOnHover>
+					<Button
+						variant='ghost'
+						className='p-0! opacity-30 transition-opacity hover:opacity-100'
+						onClick={signOut}
+					>
+						<LogOut />
+					</Button>
+				</AnimateIcon>
 			</div>
 
 			<SidebarProfile data={data} />

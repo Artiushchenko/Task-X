@@ -1,6 +1,7 @@
 'use client'
 
-import { Search } from 'lucide-react'
+import { AnimateIcon } from '@/components/animate-ui/icons/icon'
+import { Search } from '@/components/animate-ui/icons/search'
 
 interface Props {
 	placeholder?: string
@@ -14,19 +15,21 @@ export function SearchField({
 	value
 }: Props) {
 	return (
-		<div className='flex items-center w-full max-w-sm px-4 py-2 bg-white rounded-full shadow-sm dark:bg-white/10'>
-			<Search
-				size={20}
-				className='text-neutral-500 mr-2'
-			/>
+		<AnimateIcon animateOnHover>
+			<div className='flex w-full max-w-sm items-center rounded-full bg-white px-4 py-2 shadow-sm dark:bg-white/10'>
+				<Search
+					size={20}
+					className='mr-2 text-neutral-500'
+				/>
 
-			<input
-				type='search'
-				placeholder={placeholder}
-				value={value}
-				onChange={e => onChange(e.target.value)}
-				className='w-full bg-transparent focus:outline-none text-sm placeholder:text-neutral-400 text-neutral-800 dark:text-white'
-			/>
-		</div>
+				<input
+					type='search'
+					placeholder={placeholder}
+					value={value}
+					onChange={e => onChange(e.target.value)}
+					className='w-full bg-transparent text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none dark:text-white'
+				/>
+			</div>
+		</AnimateIcon>
 	)
 }

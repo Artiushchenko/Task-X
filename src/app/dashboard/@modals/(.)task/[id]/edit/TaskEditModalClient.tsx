@@ -24,7 +24,7 @@ import type { Database } from '@/types/db.types'
 import { ICON_MAP, ICON_NAMES } from '@/utils/icon-map'
 import { TaskSchema } from '@/zod-schemes/task.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -84,8 +84,6 @@ export const TaskEditModalClient = ({ id }: Props) => {
 			icon: data.icon as keyof typeof ICON_MAP
 		})
 	}, [isSuccess])
-
-	const queryClient = useQueryClient()
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['task', 'update', id],

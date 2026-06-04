@@ -1,3 +1,5 @@
+import { AnimateIcon } from '@/components/animate-ui/icons/icon'
+import { Plus } from '@/components/animate-ui/icons/plus'
 import { Button } from '@/components/ui/button'
 import {
 	Dialog,
@@ -10,7 +12,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { createSubTask } from '@/services/tasks/task-client.service'
 import { useMutation } from '@tanstack/react-query'
-import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -19,8 +20,6 @@ interface Props {
 }
 
 export const SubTaskCreateModal = ({ taskId }: Props) => {
-	// TODO: Implement main modal component
-
 	const [title, setTitle] = useState('')
 	const [isOpenModal, setIsOpenModal] = useState(false)
 
@@ -59,9 +58,14 @@ export const SubTaskCreateModal = ({ taskId }: Props) => {
 			open={isOpenModal}
 			onOpenChange={setIsOpenModal}
 		>
-			<DialogTrigger className='bg-primary hover:bg-primary/90 rounded-full p-2 text-white transition-colors dark:text-neutral-800'>
-				<Plus size={18} />
-			</DialogTrigger>
+			<AnimateIcon animateOnHover>
+				<DialogTrigger className='bg-primary hover:bg-primary/90 rounded-full p-2 text-white transition-colors dark:text-neutral-800'>
+					<Plus
+						size={18}
+						animateOnHover
+					/>
+				</DialogTrigger>
+			</AnimateIcon>
 			<DialogContent className='max-w-sm!'>
 				<DialogHeader>
 					<DialogTitle className='mb-4'>Create subtask</DialogTitle>

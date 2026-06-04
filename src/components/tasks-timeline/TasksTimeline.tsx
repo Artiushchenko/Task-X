@@ -1,16 +1,19 @@
 import type { TTask } from '@/types/task.types'
 import { parseTime } from '@/utils/parse-time'
-import { getHours, getMinutes } from 'date-fns'
+import { assignTaskRows } from '@/utils/timeline/assign-task-rows'
 import Image from 'next/image'
 import { Task } from '../ui/task/Task'
 
-const HOURS = Array.from({ length: 9 }, (_, i) => i + 9)
+import { TIMELINE_CONFIG } from '@/config/timeline'
+import { useTimelineHeight } from '@/hooks/useTimelineHeight'
+import { getTimelineHours } from '@/utils/timeline/get-hours'
+import { timeToPercent } from '@/utils/timeline/time-to-percent'
 
-interface Props {
-	todayTasks: TTask[]
-}
+export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
+	const tasksWithRows = assignTaskRows(todayTasks)
 
-export const TasksTimeline = ({ todayTasks }: Props) => {
+	const HOURS = getTimelineHours()
+
 	const users = [
 		...new Map(
 			todayTasks
@@ -19,6 +22,11 @@ export const TasksTimeline = ({ todayTasks }: Props) => {
 				.map(user => [user.profiles.id, user.profiles])
 		).values()
 	]
+
+	const maxRow = Math.max(...tasksWithRows.map(t => t.row), 0)
+	const timelineHeight = useTimelineHeight(maxRow)
+
+	const ROW_HEIGHT = TIMELINE_CONFIG.TASK_HEIGHT + TIMELINE_CONFIG.ROW_GAP
 
 	return (
 		<div className='bg-card rounded-xl p-5'>
@@ -40,50 +48,75 @@ export const TasksTimeline = ({ todayTasks }: Props) => {
 				</div>
 			</div>
 
-			<div className='w-full overflow-x-auto p-3'>
-				<div className='grid grid-cols-9'>
-					{HOURS.map(hour => (
-						<div
-							key={hour}
-							className='text-left text-sm font-medium opacity-50'
-						>
-							{hour > 12 ? `${hour - 12} pm` : `${hour} am`}
-						</div>
-					))}
+			<div className='w-full overflow-hidden'>
+				<div className='relative mb-1 h-10 w-full'>
+					{HOURS.map((hour, i) => {
+						const raw = (i / (HOURS.length - 1)) * 100
+						const left =
+							TIMELINE_CONFIG.LEFT_PAD +
+							(raw / 100) *
+								(100 - TIMELINE_CONFIG.LEFT_PAD - TIMELINE_CONFIG.RIGHT_PAD)
+
+						return (
+							<div
+								key={hour}
+								className='absolute text-sm font-medium whitespace-nowrap opacity-50'
+								style={{
+									left: `${left}%`,
+									transform: 'translateX(-50%)'
+								}}
+							>
+								{hour > 12 ? `${hour - 12} pm` : `${hour} am`}
+							</div>
+						)
+					})}
 				</div>
 
-				{/* TODO: Active vertical line by current time */}
+				<div
+					className='relative w-full overflow-hidden'
+					style={{ height: timelineHeight }}
+				>
+					<div className='pointer-events-none absolute inset-0'>
+						{HOURS.map((_, i) => {
+							const raw = (i / (HOURS.length - 1)) * 100
+							const left =
+								TIMELINE_CONFIG.LEFT_PAD +
+								(raw / 100) *
+									(100 - TIMELINE_CONFIG.LEFT_PAD - TIMELINE_CONFIG.RIGHT_PAD)
 
-				<div className='relative h-72'>
-					{todayTasks.map(task => {
+							return (
+								<div
+									key={i}
+									className='bg-primary/30 absolute top-0 bottom-0 w-0.5'
+									style={{
+										left: `${left}%`
+									}}
+								/>
+							)
+						})}
+					</div>
+
+					{tasksWithRows.map(task => {
 						if (!task.start_time || !task.end_time) {
 							return null
 						}
 
-						const formattedStartTime = parseTime(task.due_date, task.start_time)
-						const formattedEndTime = parseTime(task.due_date, task.end_time)
+						const startTime = parseTime(task.due_date, task.start_time)
+						const endTime = parseTime(task.due_date, task.end_time)
 
-						// TODO: Move this logic to the store
+						const startPercent = timeToPercent(startTime)
+						const endPercent = timeToPercent(endTime)
 
-						const start = getHours(formattedStartTime)
-						const end = getHours(formattedEndTime)
-
-						const startMinutes = getMinutes(formattedStartTime)
-						const endMinutes = getMinutes(formattedEndTime)
-
-						const startPercent =
-							(((start - 9) * 60 + startMinutes) / ((17 - 9) * 60)) * 100
-						const endPercent =
-							(((end - 9) * 60 + endMinutes) / ((17 - 9) * 60)) * 100
 						const widthPercent = endPercent - startPercent
 
 						return (
 							<div
 								key={task.id}
-								className='border-primary absolute top-8'
+								className='absolute z-10'
 								style={{
 									left: `${startPercent}%`,
-									width: `${widthPercent}%`
+									width: `${widthPercent}%`,
+									top: `calc(${task.row * ROW_HEIGHT}px + 6px)`
 								}}
 							>
 								<Task

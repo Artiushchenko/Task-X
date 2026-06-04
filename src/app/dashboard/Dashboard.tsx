@@ -15,6 +15,7 @@ import type {
 	TGetTasksResponse,
 	TGetTodayTasksResponse
 } from '@/types/task.types'
+import cn from 'clsx'
 import { Chat } from './chat/Chat'
 
 interface Props {
@@ -39,12 +40,20 @@ export function Dashboard({
 					<Heading>Dashboard</Heading>
 
 					<SearchField
+						// TODO: Implement search functionality
 						value=''
 						onChange={() => {}}
 					/>
 				</div>
 
-				<div className='mb-7 grid grid-cols-[1fr_3.5fr] gap-4'>
+				<div
+					className={cn(
+						'mb-7 grid gap-4',
+						projectsChartData.length && !projectsStats.length
+							? 'grid-cols-1'
+							: 'grid-cols-[1fr_3.5fr]'
+					)}
+				>
 					<ProjectStatistics projectsStats={projectsStats} />
 
 					<ProjectStatisticsChart projectsChartData={projectsChartData} />

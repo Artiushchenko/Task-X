@@ -1,6 +1,8 @@
+import { AnimateIcon } from '@/components/animate-ui/icons/icon'
+import { Paperclip } from '@/components/animate-ui/icons/paperclip'
+import { Send } from '@/components/animate-ui/icons/send'
 import type { TChatMessageWithProfile } from '@/types/chat.types'
 import { createClient } from '@/utils/supabase/client'
-import { Paperclip, Send } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { USERS } from '../data/users.data'
@@ -125,9 +127,11 @@ export function Chat({ userId }: Props) {
 
 				{/* Form for send message */}
 				<div className='flex items-center gap-2 bg-[#5b51b1] px-3.5 py-3'>
-					<button className='shrink-0 text-white'>
-						<Paperclip />
-					</button>
+					<AnimateIcon animateOnHover>
+						<button className='shrink-0 text-white'>
+							<Paperclip size={22} />
+						</button>
+					</AnimateIcon>
 
 					<input
 						type='text'
@@ -137,12 +141,17 @@ export function Chat({ userId }: Props) {
 						className='w-full bg-transparent p-2 text-white placeholder:text-[#b2aedf] focus:outline-none'
 					/>
 
-					<button
-						className='flex size-9 shrink-0 items-center justify-center rounded-full bg-[#9383d8] text-white opacity-90 transition-colors hover:opacity-100'
-						onClick={sendMessage}
-					>
-						<Send size={18} />
-					</button>
+					<AnimateIcon animateOnHover>
+						<button
+							className='flex size-9 shrink-0 items-center justify-center rounded-full bg-[#9383d8] text-white opacity-90 transition-colors hover:opacity-100'
+							onClick={sendMessage}
+						>
+							<Send
+								size={18}
+								className='-translate-x-px'
+							/>
+						</button>
+					</AnimateIcon>
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,17 @@
+export const TIMELINE_CONFIG = {
+	START_HOUR: 9,
+	END_HOUR: 17,
+	HOURS: Array.from({ length: 9 }, (_, i) => i + 9),
+
+	TASK_HEIGHT: 140,
+	ROW_GAP: 14,
+
+	LEFT_PAD: 6,
+	RIGHT_PAD: 6
+} as const
+
+export const TOTAL_MINUTES =
+	(TIMELINE_CONFIG.END_HOUR - TIMELINE_CONFIG.START_HOUR) * 60
+
+export const INNER_WIDTH =
+	100 - TIMELINE_CONFIG.LEFT_PAD - TIMELINE_CONFIG.RIGHT_PAD
