@@ -1,18 +1,20 @@
 import type { TTask } from '@/types/task.types'
-import { parseTime } from '@/utils/parse-time'
 import { assignTaskRows } from '@/utils/timeline/assign-task-rows'
 import Image from 'next/image'
-import { Task } from '../ui/task/Task'
 
-import { TIMELINE_CONFIG } from '@/config/timeline'
 import { useTimelineHeight } from '@/hooks/useTimelineHeight'
 import { getTimelineHours } from '@/utils/timeline/get-hours'
-import { timeToPercent } from '@/utils/timeline/time-to-percent'
+import { getTimelinePoints } from '@/utils/timeline/get-timeline-points'
+import cn from 'clsx'
+import TaskTimelineCard from './TaskTimelineCard'
 
 export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
 	const tasksWithRows = assignTaskRows(todayTasks)
 
-	const HOURS = getTimelineHours()
+	const timelinePoints = getTimelinePoints(
+		getTimelineHours(),
+		new Date().getHours()
+	)
 
 	const users = [
 		...new Map(
@@ -25,8 +27,6 @@ export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
 
 	const maxRow = Math.max(...tasksWithRows.map(t => t.row), 0)
 	const timelineHeight = useTimelineHeight(maxRow)
-
-	const ROW_HEIGHT = TIMELINE_CONFIG.TASK_HEIGHT + TIMELINE_CONFIG.ROW_GAP
 
 	return (
 		<div className='bg-card rounded-xl p-5'>
@@ -50,26 +50,23 @@ export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
 
 			<div className='w-full overflow-hidden'>
 				<div className='relative mb-1 h-10 w-full'>
-					{HOURS.map((hour, i) => {
-						const raw = (i / (HOURS.length - 1)) * 100
-						const left =
-							TIMELINE_CONFIG.LEFT_PAD +
-							(raw / 100) *
-								(100 - TIMELINE_CONFIG.LEFT_PAD - TIMELINE_CONFIG.RIGHT_PAD)
-
-						return (
-							<div
-								key={hour}
-								className='absolute text-sm font-medium whitespace-nowrap opacity-50'
-								style={{
-									left: `${left}%`,
-									transform: 'translateX(-50%)'
-								}}
-							>
-								{hour > 12 ? `${hour - 12} pm` : `${hour} am`}
-							</div>
-						)
-					})}
+					{timelinePoints.map(point => (
+						<div
+							key={point.hour}
+							className={cn(
+								'absolute text-sm whitespace-nowrap transition-all',
+								point.isPast && 'opacity-30',
+								point.isCurrent && 'font-bold opacity-100',
+								!point.isPast && !point.isCurrent && 'opacity-50'
+							)}
+							style={{
+								left: `${point.left}%`,
+								transform: 'translateX(-50%)'
+							}}
+						>
+							{point.hour > 12 ? `${point.hour - 12} pm` : `${point.hour} am`}
+						</div>
+					))}
 				</div>
 
 				<div
@@ -77,54 +74,28 @@ export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
 					style={{ height: timelineHeight }}
 				>
 					<div className='pointer-events-none absolute inset-0'>
-						{HOURS.map((_, i) => {
-							const raw = (i / (HOURS.length - 1)) * 100
-							const left =
-								TIMELINE_CONFIG.LEFT_PAD +
-								(raw / 100) *
-									(100 - TIMELINE_CONFIG.LEFT_PAD - TIMELINE_CONFIG.RIGHT_PAD)
-
-							return (
-								<div
-									key={i}
-									className='bg-primary/30 absolute top-0 bottom-0 w-0.5'
-									style={{
-										left: `${left}%`
-									}}
-								/>
-							)
-						})}
+						{timelinePoints.map(point => (
+							<div
+								key={point.hour}
+								className={cn(
+									'absolute top-0 bottom-0 w-0.5 transition-all',
+									point.isPast && 'bg-primary/15',
+									point.isCurrent && 'bg-primary w-0.75',
+									!point.isPast && !point.isCurrent && 'bg-primary/30'
+								)}
+								style={{
+									left: `${point.left}%`
+								}}
+							/>
+						))}
 					</div>
 
 					{tasksWithRows.map(task => {
-						if (!task.start_time || !task.end_time) {
-							return null
-						}
-
-						const startTime = parseTime(task.due_date, task.start_time)
-						const endTime = parseTime(task.due_date, task.end_time)
-
-						const startPercent = timeToPercent(startTime)
-						const endPercent = timeToPercent(endTime)
-
-						const widthPercent = endPercent - startPercent
-
 						return (
-							<div
+							<TaskTimelineCard
 								key={task.id}
-								className='absolute z-10'
-								style={{
-									left: `${startPercent}%`,
-									width: `${widthPercent}%`,
-									top: `calc(${task.row * ROW_HEIGHT}px + 6px)`
-								}}
-							>
-								<Task
-									task={task}
-									isColor
-									isMinimal
-								/>
-							</div>
+								task={task}
+							/>
 						)
 					})}
 				</div>

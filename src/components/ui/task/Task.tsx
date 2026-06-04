@@ -93,7 +93,7 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 							<div key={profiles.id}>
 								<Image
 									src={profiles?.avatar_path || ''}
-									alt={profiles?.name || ''}
+									alt={`${profiles?.name || 'Task participant'} avatar`}
 									width={36}
 									height={36}
 									className='rounded-full border border-white dark:border-neutral-800'
@@ -145,6 +145,7 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 							<Link
 								href={DashboardPages.TASK_EDIT(task.id)}
 								className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
+								aria-label={`Edit task: ${task.title}`}
 							>
 								<Brush size={18} />
 							</Link>

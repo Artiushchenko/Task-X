@@ -2,6 +2,9 @@ import type {
 	getServerTasks,
 	getServerTodayTasks
 } from '@/services/tasks/task-server.service'
+import type { TaskSchema } from '@/zod-schemes/task.zod'
+import type { Control } from 'react-hook-form'
+import type z from 'zod'
 import type { Database } from './db.types'
 
 export type TGetTasksResponse = NonNullable<
@@ -21,4 +24,6 @@ export type TTask = Database['public']['Tables']['tasks']['Row'] & {
 }
 export type TTaskStatus = 'not-started' | 'in-progress' | 'completed'
 export type TTaskSortBy = 'asc' | 'desc'
+
 export type TTaskFormData = Database['public']['Tables']['tasks']['Update']
+export type TTaskFormControl = Control<z.infer<typeof TaskSchema>>

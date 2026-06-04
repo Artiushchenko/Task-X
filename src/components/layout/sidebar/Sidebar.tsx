@@ -37,6 +37,7 @@ export const Sidebar = ({
 						variant='ghost'
 						className='p-0! opacity-30 transition-opacity hover:opacity-100'
 						onClick={signOut}
+						aria-label='Sign out'
 					>
 						<LogOut />
 					</Button>

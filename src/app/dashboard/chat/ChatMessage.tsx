@@ -2,13 +2,14 @@ import type { TChatMessageWithProfile } from '@/types/chat.types'
 import cn from 'clsx'
 import { format } from 'date-fns'
 import Image from 'next/image'
+import { memo } from 'react'
 
 interface Props {
 	message: TChatMessageWithProfile
 	userId: string
 }
 
-export function ChatMessage({ message, userId }: Props) {
+function ChatMessage({ message, userId }: Props) {
 	const isOwnMessage = userId === message.user_id
 
 	return (
@@ -76,3 +77,5 @@ export function ChatMessage({ message, userId }: Props) {
 		</div>
 	)
 }
+
+export default memo(ChatMessage)

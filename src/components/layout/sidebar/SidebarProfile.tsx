@@ -17,13 +17,16 @@ export function SidebarProfile({
 			{data.avatar_path ? (
 				<Image
 					src={data.avatar_path}
-					alt={data.name || 'User avatar'}
+					alt={`${data.name || 'User'} avatar`}
 					width={36}
 					height={36}
 					className='shrink-0 rounded-full'
 				/>
 			) : (
-				<div className='bg-primary h-8 w-8 shrink-0 rounded-full' />
+				<div
+					className='bg-primary h-8 w-8 shrink-0 rounded-full'
+					aria-hidden='true'
+				/>
 			)}
 
 			<div className='leading-snug'>

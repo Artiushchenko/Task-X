@@ -25,6 +25,7 @@ export function SearchField({
 				<input
 					type='search'
 					placeholder={placeholder}
+					aria-label={placeholder}
 					value={value}
 					onChange={e => onChange(e.target.value)}
 					className='w-full bg-transparent text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none dark:text-white'
