@@ -5,20 +5,23 @@ export type TimelineTaskWithRow = TTask & {
 	row: number
 }
 
+const getTaskStart = (task: TTask) => {
+	if (task.start_time && task.due_date) {
+		return parseTime(task.due_date, task.start_time)
+	}
+
+	return new Date(9999, 0, 1)
+}
+
 export function assignTaskRows(tasks: TTask[]): TimelineTaskWithRow[] {
 	const rows: TTask[][] = []
 
-	const sortedTasks = [...tasks]
-		.filter(task => task.start_time && task.end_time)
-		.sort((a, b) => {
-			const aStart = parseTime(a.due_date, a.start_time!)
-			const bStart = parseTime(b.due_date, b.start_time!)
-
-			return aStart.getTime() - bStart.getTime()
-		})
+	const sortedTasks = [...tasks].sort((a, b) => {
+		return getTaskStart(a).getTime() - getTaskStart(b).getTime()
+	})
 
 	return sortedTasks.map(task => {
-		const start = parseTime(task.due_date, task.start_time!)
+		const start = getTaskStart(task)
 
 		let rowIndex = 0
 
@@ -31,7 +34,10 @@ export function assignTaskRows(tasks: TTask[]): TimelineTaskWithRow[] {
 			}
 
 			const lastTask = row[row.length - 1]
-			const lastEnd = parseTime(lastTask.due_date, lastTask.end_time!)
+			const lastEnd =
+				lastTask.start_time && lastTask.end_time
+					? parseTime(lastTask.due_date, lastTask.end_time)
+					: new Date(0)
 
 			const isFree = start >= lastEnd
 

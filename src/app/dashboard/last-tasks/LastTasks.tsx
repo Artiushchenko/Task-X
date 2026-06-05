@@ -11,13 +11,14 @@ import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { LastTasksFilter } from './LastTasksFilter'
 import { LastTasksSort } from './LastTasksSort'
+import { AddTaskModal } from './add-task-modal/AddTaskModal'
 
 export const LastTasks = ({ tasks }: { tasks: TClientTasksResponse }) => {
 	const [status, setStatus] = useState<TTaskStatus | undefined>(undefined)
 	const [sort, setSort] = useState<TTaskSortBy>('asc')
 
-	const { data, isPending } = useQuery({
-		queryKey: ['tasks', status, sort],
+	const { data, isPending, refetch } = useQuery({
+		queryKey: ['last-tasks', status, sort],
 		queryFn: () => getClientTasks({ status, sortByDueDate: sort }),
 		placeholderData: tasks
 	})
@@ -35,6 +36,8 @@ export const LastTasks = ({ tasks }: { tasks: TClientTasksResponse }) => {
 				</h2>
 
 				<div className='flex items-center gap-4'>
+					<AddTaskModal refetch={refetch} />
+
 					<LastTasksFilter
 						status={status}
 						setStatus={setStatus}

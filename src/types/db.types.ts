@@ -248,7 +248,7 @@ export type Database = {
           end_time?: string | null
           icon?: string | null
           id?: string
-          owner_id: string
+          owner_id?: string
           project_id?: string | null
           start_time?: string | null
           title: string

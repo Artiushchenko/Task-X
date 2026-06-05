@@ -18,6 +18,7 @@
 		"@tanstack/react-query": "^5.100.14",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"cmdk": "^1.1.1",
 		"date-fns": "^4.3.0",
 		"js-cookie": "^3.0.7",
 		"lucide-react": "^1.16.0",
@@ -51,6 +52,18 @@
 		"supabase": "^2.102.0",
 		"tailwindcss": "^4",
 		"typescript": "^5"
+	},
+	"tailwind": {
+		"safelist": [
+			"bg-pink-300",
+			"bg-pink-400",
+			"bg-violet-300",
+			"bg-violet-500",
+			"bg-yellow-300",
+			"bg-yellow-400",
+			"bg-emerald-600",
+			"bg-amber-400"
+		]
 	},
 	"ignoreScripts": [
 		"sharp",

@@ -8,12 +8,26 @@ interface Props {
 	task: TTask & {
 		row: number
 	}
+	variant?: 'timeline' | 'floating'
 }
 
-function TaskTimelineCard({ task }: Props) {
+function TaskTimelineCard({ task, variant = 'timeline' }: Props) {
 	const ROW_HEIGHT = TIMELINE_CONFIG.TASK_HEIGHT + TIMELINE_CONFIG.ROW_GAP
 
-	const percents = useMemo(() => getTaskCardPercents(task), [task])
+	const percents = useMemo(
+		() => (variant === 'timeline' ? getTaskCardPercents(task) : null),
+		[task, variant]
+	)
+
+	if (variant === 'floating') {
+		return (
+			<Task
+				task={task}
+				isColor
+				isMinimal
+			/>
+		)
+	}
 
 	return (
 		<div

@@ -53,9 +53,11 @@ export function ProgressBar({ progress }: Props) {
 					}
 				)}
 				style={{
-					width: `${clamped}%`,
+					width: clamped === 0 ? '100%' : `${clamped}%`,
 					backgroundImage:
-						'repeating-linear-gradient(-45deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 20px, transparent 20px, transparent 40px)'
+						clamped === 0
+							? ''
+							: 'repeating-linear-gradient(-45deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 20px, transparent 20px, transparent 40px)'
 				}}
 			>
 				{progressText}

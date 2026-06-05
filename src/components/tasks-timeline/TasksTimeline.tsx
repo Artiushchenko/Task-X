@@ -9,7 +9,12 @@ import { getTimelinePoints } from '@/utils/timeline/get-timeline-points'
 import TaskTimelineCard from './TaskTimelineCard'
 
 export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
-	const tasksWithRows = assignTaskRows(todayTasks)
+	const timedTasks = todayTasks.filter(task => task.start_time && task.end_time)
+	const floatingTasks = todayTasks.filter(
+		task => !task.start_time || !task.end_time
+	)
+
+	const tasksWithRows = assignTaskRows(timedTasks)
 
 	const timelinePoints = getTimelinePoints(
 		getTimelineHours(),
@@ -91,16 +96,32 @@ export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
 						))}
 					</div>
 
-					{tasksWithRows.map(task => {
-						return (
-							<TaskTimelineCard
-								key={task.id}
-								task={task}
-							/>
-						)
-					})}
+					{tasksWithRows.map(task => (
+						<TaskTimelineCard
+							key={task.id}
+							task={task}
+						/>
+					))}
 				</div>
 			</div>
+
+			{floatingTasks.length > 0 && (
+				<div className='mt-6 border-t pt-4'>
+					<div className='text-muted-foreground mb-2 text-xs uppercase'>
+						No scheduled time
+					</div>
+
+					<div className='flex flex-wrap gap-4'>
+						{floatingTasks.map(task => (
+							<TaskTimelineCard
+								key={task.id}
+								task={task as any}
+								variant='floating'
+							/>
+						))}
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }

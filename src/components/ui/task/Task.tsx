@@ -27,7 +27,8 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 	const completedCount =
 		task?.subtasks?.filter(st => st.is_completed).length || 0
 	const totalCount = task?.subtasks?.length || 0
-	const progress = Math.round((completedCount / totalCount) * 100)
+	const progress =
+		completedCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100)
 	const Icon = ICON_MAP[task.icon as keyof typeof ICON_MAP]
 	const formattedDate = new Date(task.due_date)
 
