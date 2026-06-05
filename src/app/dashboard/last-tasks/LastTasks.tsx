@@ -2,6 +2,7 @@
 
 import { TaskList } from '@/components/elements/TaskList'
 import { getClientTasks } from '@/services/tasks/task-client.service'
+import type { TProjectsList } from '@/types/project.types'
 import type {
 	TClientTasksResponse,
 	TTaskSortBy,
@@ -9,17 +10,29 @@ import type {
 } from '@/types/task.types'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { LastTasksFilter } from './LastTasksFilter'
-import { LastTasksSort } from './LastTasksSort'
 import { AddTaskModal } from './add-task-modal/AddTaskModal'
+import { LastTasksProjectFilter } from './LastTasksProjectFilter'
+import { LastTasksSort } from './LastTasksSort'
+import { LastTasksStatusFilter } from './LastTasksStatusFilter'
 
-export const LastTasks = ({ tasks }: { tasks: TClientTasksResponse }) => {
+interface Props {
+	projects: TProjectsList
+	tasks: TClientTasksResponse
+}
+
+export const LastTasks = ({ projects, tasks }: Props) => {
+	const [currentProjectId, setCurrentProjectId] = useState<string | null>(null)
 	const [status, setStatus] = useState<TTaskStatus | undefined>(undefined)
 	const [sort, setSort] = useState<TTaskSortBy>('asc')
 
-	const { data, isPending, refetch } = useQuery({
-		queryKey: ['last-tasks', status, sort],
-		queryFn: () => getClientTasks({ status, sortByDueDate: sort }),
+	const { data, isFetching, refetch } = useQuery({
+		queryKey: ['last-tasks', currentProjectId, status, sort],
+		queryFn: () =>
+			getClientTasks({
+				projectId: currentProjectId,
+				status,
+				sortByDueDate: sort
+			}),
 		placeholderData: tasks
 	})
 
@@ -36,9 +49,13 @@ export const LastTasks = ({ tasks }: { tasks: TClientTasksResponse }) => {
 				</h2>
 
 				<div className='flex items-center gap-4'>
-					<AddTaskModal refetch={refetch} />
+					<LastTasksProjectFilter
+						projects={projects}
+						currentProjectId={currentProjectId}
+						setCurrentProjectId={setCurrentProjectId}
+					/>
 
-					<LastTasksFilter
+					<LastTasksStatusFilter
 						status={status}
 						setStatus={setStatus}
 					/>
@@ -47,11 +64,13 @@ export const LastTasks = ({ tasks }: { tasks: TClientTasksResponse }) => {
 						sort={sort}
 						setSort={setSort}
 					/>
+
+					<AddTaskModal refetch={refetch} />
 				</div>
 			</div>
 
 			<TaskList
-				isPending={isPending}
+				isFetching={isFetching}
 				tasks={data || []}
 			/>
 		</div>

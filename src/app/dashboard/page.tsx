@@ -1,4 +1,5 @@
 import { getServerProfile } from '@/services/profile/profile-server.service'
+import { getServerProjects } from '@/services/projects/project-server.service'
 import { getServerProjectsChartData } from '@/services/statistics/chart/projects-chart-server.service'
 import { getServerProjectsStats } from '@/services/statistics/projects-stats-server.service'
 import {
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-	const [tasks, todayTasks, projectsStats, projectsChartData] =
+	const [tasks, todayTasks, projects, projectsStats, projectsChartData] =
 		await Promise.all([
 			getServerTasks(),
 			getServerTodayTasks(),
+			getServerProjects(),
 			getServerProjectsStats(),
 			getServerProjectsChartData('yearly')
 		])
@@ -28,6 +30,7 @@ export default async function Page() {
 			tasks={tasks.data || []}
 			todayTasks={todayTasks.data || []}
 			userId={data.id}
+			projects={projects.data || []}
 			projectsStats={projectsStats.data || []}
 			projectsChartData={projectsChartData.data || []}
 		/>

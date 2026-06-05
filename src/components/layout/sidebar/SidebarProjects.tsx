@@ -19,11 +19,16 @@ export function SidebarProjects({ projects }: Props) {
 					<li key={project.name}>
 						<Link
 							href={DashboardPages.PROJECT_DETAILS(project.slug)}
-							className='flex items-center gap-2'
+							className='group flex items-center gap-2'
 						>
-							<div className={cn(project.color, 'h-3 w-3')} />
+							<div
+								className={cn(
+									project.color,
+									'h-3 w-3 transition-all duration-450 ease-in-out group-hover:rounded-md'
+								)}
+							/>
 
-							<span className='text-neutral-500 dark:text-white'>
+							<span className='text-neutral-500 group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-white'>
 								{project.name}
 							</span>
 						</Link>

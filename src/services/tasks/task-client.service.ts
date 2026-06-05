@@ -23,15 +23,21 @@ function filterTasks(tasks: TTask[], status: TTaskStatus) {
 }
 
 export async function getClientTasks({
+	projectId,
 	status,
 	sortByDueDate
 }: {
+	projectId?: string | null
 	status?: TTaskStatus
 	sortByDueDate?: TTaskSortBy
 }) {
 	let query = createClient()
 		.from('tasks')
 		.select(`*, subtasks(*), task_participants(profiles(*))`)
+
+	if (projectId) {
+		query = query.eq('project_id', projectId)
+	}
 
 	if (sortByDueDate) {
 		query = query.order('due_date', {

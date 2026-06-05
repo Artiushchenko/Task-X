@@ -7,6 +7,7 @@ import { ProjectStatistics } from './project-statistics/ProjectStatistics'
 
 import { Heading } from '@/components/ui/Heading'
 import { SearchField } from '@/components/ui/search-field/SearchField'
+import type { TProjectsList } from '@/types/project.types'
 import type {
 	TGetProjectsChartDataResponse,
 	TGetProjectsStatsResponse
@@ -22,6 +23,7 @@ interface Props {
 	tasks: TGetTasksResponse
 	todayTasks: TGetTodayTasksResponse
 	userId: string
+	projects: TProjectsList
 	projectsStats: TGetProjectsStatsResponse
 	projectsChartData: TGetProjectsChartDataResponse
 }
@@ -30,6 +32,7 @@ export function Dashboard({
 	tasks,
 	todayTasks,
 	userId,
+	projects,
 	projectsStats,
 	projectsChartData
 }: Props) {
@@ -59,7 +62,10 @@ export function Dashboard({
 					<ProjectStatisticsChart projectsChartData={projectsChartData} />
 				</div>
 
-				<LastTasks tasks={tasks} />
+				<LastTasks
+					projects={projects}
+					tasks={tasks}
+				/>
 
 				<TasksTimeline todayTasks={todayTasks} />
 			</div>

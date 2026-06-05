@@ -3,14 +3,17 @@ import { SkeletonLoader } from '../ui/SkeletonLoader'
 import { Task } from '../ui/task/Task'
 
 interface Props {
-	isPending?: boolean
+	isFetching?: boolean
 	tasks: TClientTasksResponse
 }
 
-export function TaskList({ isPending, tasks }: Props) {
-	return isPending ? (
+export function TaskList({ isFetching, tasks }: Props) {
+	return isFetching ? (
 		<div className='grid grid-cols-3 gap-4'>
-			<SkeletonLoader count={3} />
+			<SkeletonLoader
+				count={3}
+				className='h-51'
+			/>
 		</div>
 	) : tasks?.length ? (
 		<div className='grid grid-cols-3 gap-4'>

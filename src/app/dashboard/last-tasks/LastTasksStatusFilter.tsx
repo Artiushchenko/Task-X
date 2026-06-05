@@ -22,7 +22,7 @@ interface Props {
 	setStatus: (status: TTaskStatus | undefined) => void
 }
 
-export const LastTasksFilter = ({ status, setStatus }: Props) => {
+export const LastTasksStatusFilter = ({ status, setStatus }: Props) => {
 	return (
 		<div>
 			<DropdownMenu>
@@ -31,7 +31,7 @@ export const LastTasksFilter = ({ status, setStatus }: Props) => {
 						variant='outline'
 						className='capitalize'
 					>
-						{status?.replace('-', ' ') || 'All'}
+						{status?.replace('-', ' ') || 'All statuses'}
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align='end'>
