@@ -5,6 +5,7 @@ import { LogOut } from '@/components/animate-ui/icons/log-out'
 import { Button } from '@/components/ui/button'
 import { PublicPages } from '@/config/public-pages'
 import type { getServerProfile } from '@/services/profile/profile-server.service'
+import type { TProjectsList } from '@/types/project.types'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { SidebarHeading } from './SidebarHeading'
@@ -12,11 +13,12 @@ import { SidebarMenu } from './SidebarMenu'
 import { SidebarProfile } from './SidebarProfile'
 import { SidebarProjects } from './SidebarProjects'
 
-export const Sidebar = ({
-	data
-}: {
-	data: Awaited<ReturnType<typeof getServerProfile>>
-}) => {
+interface Props {
+	profile: Awaited<ReturnType<typeof getServerProfile>>
+	projects: TProjectsList
+}
+
+export const Sidebar = ({ profile, projects }: Props) => {
 	const router = useRouter()
 
 	async function signOut() {
@@ -44,13 +46,15 @@ export const Sidebar = ({
 				</AnimateIcon>
 			</div>
 
-			<SidebarProfile data={data} />
+			<SidebarProfile profile={profile} />
 
 			<SidebarHeading title='Main Menu' />
+
 			<SidebarMenu />
 
 			<SidebarHeading title='Projects' />
-			<SidebarProjects />
+
+			<SidebarProjects projects={projects} />
 		</aside>
 	)
 }

@@ -1,15 +1,16 @@
 'use client'
 
-import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
-import { Task } from '@/components/ui/task/Task'
+import { TaskList } from '@/components/elements/TaskList'
 import { getClientTasks } from '@/services/tasks/task-client.service'
-import type { TTaskSortBy, TTaskStatus } from '@/types/task.types'
+import type {
+	TClientTasksResponse,
+	TTaskSortBy,
+	TTaskStatus
+} from '@/types/task.types'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { LastTasksFilter } from './LastTasksFilter'
 import { LastTasksSort } from './LastTasksSort'
-
-type TClientTasksResponse = Awaited<ReturnType<typeof getClientTasks>>
 
 export const LastTasks = ({ tasks }: { tasks: TClientTasksResponse }) => {
 	const [status, setStatus] = useState<TTaskStatus | undefined>(undefined)
@@ -46,24 +47,10 @@ export const LastTasks = ({ tasks }: { tasks: TClientTasksResponse }) => {
 				</div>
 			</div>
 
-			{isPending ? (
-				<div className='grid grid-cols-3 gap-4'>
-					<SkeletonLoader count={3} />
-				</div>
-			) : data?.length ? (
-				<div className='grid grid-cols-3 gap-4'>
-					{data.map(task => (
-						<Task
-							key={task.id}
-							task={task}
-						/>
-					))}
-				</div>
-			) : (
-				<div>
-					<p className='opacity-50'>No tasks available</p>
-				</div>
-			)}
+			<TaskList
+				isPending={isPending}
+				tasks={data || []}
+			/>
 		</div>
 	)
 }

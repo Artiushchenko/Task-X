@@ -1,3 +1,5 @@
+'use client'
+
 import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { Plus } from '@/components/animate-ui/icons/plus'
 import { Button } from '@/components/ui/button'

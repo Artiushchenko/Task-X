@@ -7,6 +7,10 @@ export class DashboardPages {
 		return `${DashboardPages.BASE}/task/${id}/edit`
 	}
 
+	static PROJECT_DETAILS(slug: string) {
+		return `${DashboardPages.BASE}/projects/${slug}`
+	}
+
 	static MESSAGES = `${DashboardPages.BASE}/messages`
 	static INSIGHT = `${DashboardPages.BASE}/insight`
 	static TEAM = `${DashboardPages.BASE}/team`
