@@ -26,3 +26,13 @@ export async function getProfile() {
 
 	return { ...user, ...data }
 }
+
+export async function getAllProfiles() {
+	const { data, error } = await createClient().from('profiles').select('*')
+
+	if (error || !data) {
+		throw new Error(error.message || 'Profiles not found')
+	}
+
+	return data
+}

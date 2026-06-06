@@ -24,7 +24,8 @@ import { Controller, useForm, type SubmitHandler } from 'react-hook-form'
 import type z from 'zod'
 import { TaskDateField } from '../../@modals/(.)task/[id]/edit/TaskDateField'
 import { TaskIconChooseField } from '../../@modals/(.)task/[id]/edit/TaskIconChooseField'
-import { TaskProjectSelect } from './TaskProjectSelect'
+import { SelectTaskParticipants } from './SelectTaskParticipants'
+import { SelectTaskProject } from './SelectTaskProject'
 
 interface Props {
 	refetch: () => void
@@ -39,7 +40,8 @@ export function AddTaskModal({ refetch }: Props) {
 			title: '',
 			due_date: undefined,
 			icon: undefined,
-			project_id: undefined
+			project_id: undefined,
+			participants: []
 		}
 	})
 
@@ -53,17 +55,28 @@ export function AddTaskModal({ refetch }: Props) {
 
 	const onSubmit: SubmitHandler<z.infer<typeof TaskSchema>> = data => {
 		mutate({
-			title: data.title,
-			due_date: data.due_date.toISOString(),
-			icon: data.icon,
-			project_id: data.project_id
+			task: {
+				title: data.title,
+				due_date: data.due_date.toISOString(),
+				icon: data.icon,
+				project_id: data.project_id
+			},
+			participants: data.participants || []
 		})
+	}
+
+	const handleOpenChange = (open: boolean) => {
+		setIsOpenModal(open)
+
+		if (!open) {
+			form.reset()
+		}
 	}
 
 	return (
 		<Dialog
 			open={isOpenModal}
-			onOpenChange={setIsOpenModal}
+			onOpenChange={handleOpenChange}
 		>
 			<AnimateIcon animateOnHover>
 				<DialogTrigger asChild>
@@ -100,7 +113,18 @@ export function AddTaskModal({ refetch }: Props) {
 								name='project_id'
 								control={form.control}
 								render={({ field }) => (
-									<TaskProjectSelect
+									<SelectTaskProject
+										value={field.value}
+										onChange={field.onChange}
+									/>
+								)}
+							/>
+
+							<Controller
+								name='participants'
+								control={form.control}
+								render={({ field }) => (
+									<SelectTaskParticipants
 										value={field.value}
 										onChange={field.onChange}
 									/>

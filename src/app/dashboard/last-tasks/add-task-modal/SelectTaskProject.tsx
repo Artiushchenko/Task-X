@@ -23,7 +23,7 @@ interface Props {
 	onChange: (value: string) => void
 }
 
-export function TaskProjectSelect({ value, onChange }: Props) {
+export function SelectTaskProject({ value, onChange }: Props) {
 	const [isOpen, setIsOpen] = useState(false)
 
 	const { isPending, data } = useQuery({

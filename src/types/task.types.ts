@@ -8,6 +8,11 @@ import type { Control } from 'react-hook-form'
 import type z from 'zod'
 import type { Database } from './db.types'
 
+export interface ICreateTaskWithParticipants {
+	task: Database['public']['Tables']['tasks']['Insert']
+	participants?: string[]
+}
+
 export type TClientTasksResponse = Awaited<ReturnType<typeof getClientTasks>>
 export type TGetTasksResponse = NonNullable<
 	Awaited<ReturnType<typeof getServerTasks>>['data']

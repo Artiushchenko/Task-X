@@ -26,10 +26,14 @@ interface Props {
 export const Task = ({ task, isColor, isMinimal }: Props) => {
 	const completedCount =
 		task?.subtasks?.filter(st => st.is_completed).length || 0
+
 	const totalCount = task?.subtasks?.length || 0
+
 	const progress =
-		completedCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100)
+		totalCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100)
+
 	const Icon = ICON_MAP[task.icon as keyof typeof ICON_MAP]
+
 	const formattedDate = new Date(task.due_date)
 
 	const dueDate = useMemo(
@@ -40,6 +44,12 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 					' days',
 		[task.due_date]
 	)
+
+	// participants logic
+	const participants = task.task_participants.filter(u => Boolean(u.profiles))
+
+	const visibleParticipants = participants.slice(0, 3)
+	const hiddenCount = participants.length - visibleParticipants.length
 
 	return (
 		<div
@@ -87,21 +97,30 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 					</div>
 				</div>
 
+				{/* PARTICIPANTS */}
 				<div className='flex items-center -space-x-3'>
-					{task.task_participants
-						.filter(u => Boolean(u.profiles))
-						.map(({ profiles }) => (
-							<div key={profiles.id}>
-								<Image
-									src={profiles?.avatar_path || ''}
-									alt={`${profiles?.name || 'Task participant'} avatar`}
-									width={36}
-									height={36}
-									className='rounded-full border border-white dark:border-neutral-800'
-									draggable={false}
-								/>
-							</div>
-						))}
+					{visibleParticipants.map(({ profiles }) => (
+						<Image
+							key={profiles.id}
+							src={profiles?.avatar_path || ''}
+							alt={profiles?.name || 'Task participant'}
+							width={36}
+							height={36}
+							className='rounded-full border border-white dark:border-neutral-800'
+							draggable={false}
+						/>
+					))}
+
+					{hiddenCount > 0 && (
+						<div
+							className='bg-muted text-muted-foreground flex h-9 w-9 items-center justify-center rounded-full border border-neutral-500 text-xs font-medium transition-colors dark:border-neutral-600'
+							title={`${hiddenCount} more participant${
+								hiddenCount > 1 ? 's' : ''
+							}`}
+						>
+							+{hiddenCount}
+						</div>
+					)}
 				</div>
 			</div>
 
@@ -117,23 +136,25 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 						<span className='flex items-center gap-1 text-sm'>
 							<MessageSquareMore
 								size={16}
-								className={isColor ? 'opacity-80' : 'opacity-40'}
-							/>{' '}
-							{/* {task.comments.length} */}3
+								className='opacity-40'
+							/>
+							3
 						</span>
+
 						<span className='flex items-center gap-1 text-sm'>
 							<LucideImage
 								size={16}
-								className={isColor ? 'opacity-80' : 'opacity-40'}
-							/>{' '}
-							{/* {task.resources.length} */}6
+								className='opacity-40'
+							/>
+							6
 						</span>
+
 						<span className='flex items-center gap-1 text-sm'>
 							<LucideLink
 								size={16}
-								className={isColor ? 'opacity-80' : 'opacity-40'}
-							/>{' '}
-							{/* {task.links.length} */}2
+								className='opacity-40'
+							/>
+							2
 						</span>
 					</div>
 
