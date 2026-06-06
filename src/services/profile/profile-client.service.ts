@@ -1,5 +1,6 @@
 'use client'
 
+import type { TUpdateProfile } from '@/types/profile.types'
 import { createClient } from '@/utils/supabase/client'
 
 export async function getProfile() {
@@ -35,4 +36,21 @@ export async function getAllProfiles() {
 	}
 
 	return data
+}
+
+export async function updateProfile(dto: TUpdateProfile) {
+	if (!dto.id) {
+		throw new Error('Profile ID is required for update')
+	}
+
+	const { error } = await createClient()
+		.from('profiles')
+		.update(dto)
+		.eq('id', dto.id)
+
+	if (error) {
+		throw new Error(error?.message || 'Failed to update profile')
+	}
+
+	return true
 }

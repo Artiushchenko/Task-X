@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { MAIN_MENU } from './data/main-menu.data'
 
 export function SidebarMenu() {
+	// TODO: Add active link style
+
 	return (
 		<nav className='mt-3 mb-10'>
 			<ul className='space-y-4'>

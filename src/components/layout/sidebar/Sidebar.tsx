@@ -4,7 +4,7 @@ import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { LogOut } from '@/components/animate-ui/icons/log-out'
 import { Button } from '@/components/ui/button'
 import { PublicPages } from '@/config/public-pages'
-import type { getServerProfile } from '@/services/profile/profile-server.service'
+import type { TProfileResponse } from '@/types/profile.types'
 import type { TProjectsList } from '@/types/project.types'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -14,7 +14,7 @@ import { SidebarProfile } from './SidebarProfile'
 import { SidebarProjects } from './SidebarProjects'
 
 interface Props {
-	profile: Awaited<ReturnType<typeof getServerProfile>>
+	profile: TProfileResponse
 	projects: TProjectsList
 }
 

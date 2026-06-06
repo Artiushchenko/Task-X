@@ -16,7 +16,7 @@ import {
 	FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useAddTask } from '@/hooks/task-add-modal/useAddTask'
+import { useAddTask } from '@/hooks/useAddTask'
 import { TaskSchema } from '@/zod-schemes/task.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'

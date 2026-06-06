@@ -1,10 +1,10 @@
 'use client'
 
-import { getServerProfile } from '@/services/profile/profile-server.service'
+import type { TProfileResponse } from '@/types/profile.types'
 import Image from 'next/image'
 
 interface Props {
-	profile: Awaited<ReturnType<typeof getServerProfile>>
+	profile: TProfileResponse
 }
 
 export function SidebarProfile({ profile }: Props) {
