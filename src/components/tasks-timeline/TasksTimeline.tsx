@@ -46,7 +46,7 @@ export const TasksTimeline = ({ todayTasks }: { todayTasks: TTask[] }) => {
 								alt={user.name || ''}
 								width={40}
 								height={40}
-								className='rounded-full border border-white dark:border-neutral-800'
+								className='h-10! shrink-0 rounded-full border border-white object-cover dark:border-neutral-800'
 								draggable={false}
 							/>
 						</div>

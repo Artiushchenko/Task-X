@@ -2,6 +2,7 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
+	reactCompiler: true,
 	images: {
 		remotePatterns: [
 			{
@@ -9,8 +10,17 @@ const nextConfig: NextConfig = {
 				hostname: 'avatars.githubusercontent.com',
 				port: '',
 				pathname: '/**'
+			},
+			{
+				protocol: 'https',
+				hostname: 'mppdygwrzrsnqmilpuca.supabase.co',
+				port: '',
+				pathname: '/**'
 			}
 		]
+	},
+	experimental: {
+		turbopackFileSystemCacheForDev: true
 	}
 }
 

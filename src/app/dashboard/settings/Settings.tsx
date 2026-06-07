@@ -11,31 +11,53 @@ import {
 } from '@/components/ui/form'
 import { Heading } from '@/components/ui/Heading'
 import { Input } from '@/components/ui/input'
+import { useAvatarUpload } from '@/hooks/useAvatarUpload'
 import { useSettingsQueries } from '@/hooks/useSettingsQueries'
 import type { TProfileResponse } from '@/types/profile.types'
 import { ProfileSchema } from '@/zod-schemes/profile.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import type z from 'zod'
+import { AvatarUploadField } from './AvatarUploadField'
 
 interface Props {
 	profile: TProfileResponse
 }
 
 export function Settings({ profile }: Props) {
+	const [file, setFile] = useState<File | null>(null)
+	const { isUploading, uploadAvatar } = useAvatarUpload({
+		file,
+		initialAvatar: profile?.avatar_path || null
+	})
+
 	const form = useForm<z.infer<typeof ProfileSchema>>({
 		resolver: zodResolver(ProfileSchema),
 		defaultValues: {
 			name: profile?.name || '',
+			email: profile?.email || '',
 			avatar_path: profile?.avatar_path || ''
 		}
 	})
 
 	const { mutate, isPending } = useSettingsQueries()
 
-	const onSubmit: SubmitHandler<z.infer<typeof ProfileSchema>> = data => {
+	const onSubmit: SubmitHandler<z.infer<typeof ProfileSchema>> = async data => {
+		let avatarUrl = data.avatar_path
+
+		if (file) {
+			const uploadedUrl = await uploadAvatar()
+
+			if (uploadedUrl) {
+				avatarUrl = uploadedUrl
+			} else {
+				return
+			}
+		}
+
 		mutate({
-			...data,
+			avatar_path: avatarUrl,
 			id: profile.id
 		})
 	}
@@ -66,7 +88,13 @@ export function Settings({ profile }: Props) {
 						)}
 					/>
 
-					{/* Upload avatar path */}
+					<AvatarUploadField
+						initialAvatar={profile.avatar_path}
+						setValue={form.setValue}
+						isPending={isPending}
+						isUploading={isUploading}
+						setFile={setFile}
+					/>
 
 					<Button
 						type='submit'

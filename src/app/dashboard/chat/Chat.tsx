@@ -41,7 +41,7 @@ export function Chat({ userId }: Props) {
 						src={USERS[7].avatarPath || ''}
 						width={40}
 						height={40}
-						className='rounded-full'
+						className='h-10! shrink-0 rounded-full object-cover'
 						draggable={false}
 					/>
 

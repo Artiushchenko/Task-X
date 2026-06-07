@@ -18,9 +18,9 @@ export function SidebarProfile({ profile }: Props) {
 				<Image
 					src={profile.avatar_path}
 					alt={`${profile.name || 'User'} avatar`}
-					width={36}
-					height={36}
-					className='shrink-0 rounded-full'
+					width={40}
+					height={40}
+					className='h-10! shrink-0 rounded-full object-cover'
 					draggable={false}
 				/>
 			) : (

@@ -106,7 +106,7 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 							alt={profiles?.name || 'Task participant'}
 							width={36}
 							height={36}
-							className='rounded-full border border-white dark:border-neutral-800'
+							className='h-9! shrink-0 rounded-full border border-white object-cover dark:border-neutral-800'
 							draggable={false}
 						/>
 					))}

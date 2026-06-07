@@ -26,7 +26,7 @@ function ChatMessage({ message, userId }: Props) {
 					src={message.profile?.avatar_path || ''}
 					width={40}
 					height={40}
-					className='rounded-full'
+					className='h-10! shrink-0 rounded-full object-cover'
 					draggable={false}
 				/>
 			)}
@@ -72,7 +72,7 @@ function ChatMessage({ message, userId }: Props) {
 					src={message.profile?.avatar_path || ''}
 					width={40}
 					height={40}
-					className='rounded-full'
+					className='h-10! shrink-0 rounded-full object-cover'
 					draggable={false}
 				/>
 			)}
