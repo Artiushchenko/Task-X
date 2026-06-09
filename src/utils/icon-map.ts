@@ -1,6 +1,7 @@
 import {
 	BookOpen,
 	Briefcase,
+	Folder,
 	Hammer,
 	Plane,
 	ShoppingBasket,
@@ -14,7 +15,8 @@ export const ICON_NAMES = [
 	'TabletSmartphone',
 	'Briefcase',
 	'BookOpen',
-	'Hammer'
+	'Hammer',
+	'Folder'
 ] as const
 
 export type IconName = (typeof ICON_NAMES)[number]
@@ -25,5 +27,6 @@ export const ICON_MAP: Record<IconName, LucideIcon> = {
 	TabletSmartphone,
 	Briefcase,
 	BookOpen,
-	Hammer
+	Hammer,
+	Folder
 }

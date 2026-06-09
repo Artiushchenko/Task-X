@@ -22,6 +22,7 @@ export function SidebarProfile({ profile }: Props) {
 					height={40}
 					className='h-10! shrink-0 rounded-full object-cover'
 					draggable={false}
+					unoptimized
 				/>
 			) : (
 				<div

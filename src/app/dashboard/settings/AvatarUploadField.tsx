@@ -68,6 +68,7 @@ export function AvatarUploadField({
 									height={64}
 									className='h-16 w-16 rounded-full object-cover shadow-sm'
 									alt='Avatar'
+									unoptimized
 								/>
 							) : (
 								<p className='text-sm'>No image</p>

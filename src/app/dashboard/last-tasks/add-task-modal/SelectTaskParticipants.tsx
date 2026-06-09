@@ -77,6 +77,7 @@ export function SelectTaskParticipants({ value = [], onChange }: Props) {
 										width={18}
 										height={18}
 										className='h-4.5! shrink-0 rounded-full object-cover'
+										unoptimized
 									/>
 
 									<span className='max-w-24 truncate text-xs'>
@@ -135,6 +136,7 @@ export function SelectTaskParticipants({ value = [], onChange }: Props) {
 											width={24}
 											height={24}
 											className='h-6! shrink-0 rounded-full object-cover'
+											unoptimized
 										/>
 
 										<span>{profile.name}</span>

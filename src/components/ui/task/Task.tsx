@@ -108,6 +108,7 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 							height={36}
 							className='h-9! shrink-0 rounded-full border border-white object-cover dark:border-neutral-800'
 							draggable={false}
+							unoptimized
 						/>
 					))}
 

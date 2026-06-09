@@ -3,6 +3,7 @@ import { getServerProfile } from '@/services/profile/profile-server.service'
 import { getServerProjects } from '@/services/projects/project-server.service'
 import { getServerAuth } from '@/utils/supabase/get-server-auth'
 import type { ReactNode } from 'react'
+import { DashboardMain } from './DashboardMain'
 
 interface Props {
 	children: ReactNode
@@ -24,7 +25,7 @@ export default async function DashboardLayout({ children, modals }: Props) {
 				projects={projectsList.data || []}
 			/>
 
-			<main>{children}</main>
+			<DashboardMain>{children}</DashboardMain>
 
 			{modals}
 		</div>
