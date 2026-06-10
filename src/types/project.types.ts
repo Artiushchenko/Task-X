@@ -1,3 +1,4 @@
+import type { getServerInsightsData } from '@/services/insights/insights-server.service'
 import type {
 	getServerProjectBySlug,
 	getServerProjects
@@ -11,6 +12,11 @@ export interface IProject {
 export type TProjectWithSlug = NonNullable<
 	Awaited<ReturnType<typeof getServerProjectBySlug>>['data']
 >[0]
+
+export type TProjectInsight = NonNullable<
+	Awaited<ReturnType<typeof getServerInsightsData>>['data']
+>[0]
+
 export type TProjectsList = Awaited<
 	ReturnType<typeof getServerProjects>
 >['data']
