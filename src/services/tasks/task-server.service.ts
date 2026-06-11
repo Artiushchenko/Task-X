@@ -5,7 +5,9 @@ import { createClientFromServer } from '@/utils/supabase/server'
 export async function getServerTasks() {
 	return (await createClientFromServer())
 		.from('tasks')
-		.select(`*, subtasks(*), task_participants(profiles(*))`)
+		.select(
+			`*, subtasks(*), projects(name, color), task_participants(profiles(*))`
+		)
 		.order('due_date', {
 			ascending: true
 		})

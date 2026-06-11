@@ -1,8 +1,8 @@
 import type { ITasksByDay } from '@/types/insights.types'
 import { useMemo } from 'react'
 import {
-	Area,
-	AreaChart,
+	Bar,
+	BarChart,
 	CartesianGrid,
 	ResponsiveContainer,
 	Tooltip,
@@ -15,54 +15,42 @@ interface Props {
 }
 
 export function TasksOvertimeChart({ data }: Props) {
-	const formattedData = useMemo(
-		() =>
-			data.reverse().map((item, index) => ({
+	const formattedData = useMemo(() => {
+		return data.map(item => {
+			const [year, month, day] = item.date.split('-').map(Number)
+			const date = new Date(year, month - 1, day)
+
+			const displayDate = date.toLocaleDateString('en-US', {
+				month: 'short',
+				day: 'numeric'
+			})
+
+			return {
 				...item,
-				displayDate:
-					index % 15 === 0
-						? new Date(item.date).toLocaleDateString('en-US', {
-								month: 'short',
-								day: 'numeric'
-							})
-						: ''
-			})),
-		[data]
-	)
+				displayDate,
+				formattedDate: date.toLocaleDateString('en-US', {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric'
+				})
+			}
+		})
+	}, [data])
 
 	return (
 		<div className='bg-card rounded-2xl p-5'>
-			<h2 className='mb-5 text-xl font-medium'>Tasks Overtime (90 days)</h2>
+			<h2 className='mb-5 text-xl font-medium'>
+				Tasks Creation Activity (Last 90 days)
+			</h2>
 
 			<ResponsiveContainer
 				width='100%'
 				height={300}
 			>
-				<AreaChart
+				<BarChart
 					data={formattedData}
 					margin={{ left: -20, right: 10 }}
 				>
-					<defs>
-						<linearGradient
-							id='colorTasks'
-							x1='0'
-							y1='0'
-							x2='0'
-							y2='1'
-						>
-							<stop
-								offset='5%'
-								stopColor='#6366F1'
-								stopOpacity={0.3}
-							/>
-							<stop
-								offset='95%'
-								stopColor='#6366F1'
-								stopOpacity={0}
-							/>
-						</linearGradient>
-					</defs>
-
 					<CartesianGrid
 						strokeDasharray='3 3'
 						vertical={false}
@@ -88,31 +76,29 @@ export function TasksOvertimeChart({ data }: Props) {
 								return null
 							}
 
-							return (
-								<div className='bg-primary rounded-lg px-3 py-2 text-sm text-white shadow-lg'>
-									<p className='font-semibold'>{payload[0].value} tasks</p>
+							const count = payload[0].payload.count
+							const formattedDate = payload[0].payload.formattedDate
 
-									<p className='text-xs opacity-80'>
-										{new Date(payload[0].payload.date).toLocaleDateString()}
+							return (
+								<div className='bg-primary rounded-lg px-3 py-2 text-sm text-white shadow-lg dark:text-neutral-800'>
+									<p className='font-semibold'>
+										{count} task{count !== 1 ? 's' : ''} created
 									</p>
+
+									<p className='text-xs opacity-80'>{formattedDate}</p>
 								</div>
 							)
 						}}
-						cursor={{
-							stroke: '#6366F1',
-							strokeWidth: 1,
-							strokeDasharray: '5 5'
-						}}
+						cursor={{ fill: 'rgba(99, 102, 241, 0.1)' }}
 					/>
 
-					<Area
-						type='monotone'
+					<Bar
 						dataKey='count'
-						stroke='#6366f1'
-						strokeWidth={2}
-						fill='url(#colorTasks)'
+						fill='#6366f1'
+						radius={[8, 8, 0, 0]}
+						maxBarSize={60}
 					/>
-				</AreaChart>
+				</BarChart>
 			</ResponsiveContainer>
 		</div>
 	)

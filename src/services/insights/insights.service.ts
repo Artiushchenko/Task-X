@@ -42,9 +42,13 @@ class InsightsService {
 		const tasksByDate = new Map<string, number>()
 
 		allTasks.forEach(task => {
-			const taskDate = new Date(task.due_date)
+			if (!task.created_at) {
+				return
+			}
 
-			if (taskDate >= ninetyDaysAgo) {
+			const taskDate = new Date(task.created_at)
+
+			if (taskDate >= ninetyDaysAgo && taskDate <= new Date()) {
 				const dateKey = taskDate.toISOString().split('T')[0]
 
 				tasksByDate.set(dateKey, (tasksByDate.get(dateKey) || 0) + 1)
@@ -53,7 +57,7 @@ class InsightsService {
 
 		const result: ITasksByDay[] = []
 
-		for (let i = 0; i < 90; i++) {
+		for (let i = 89; i >= 0; i--) {
 			const date = new Date()
 			date.setDate(date.getDate() - i)
 			const dateKey = date.toISOString().split('T')[0]

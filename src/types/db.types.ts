@@ -233,6 +233,7 @@ export type Database = {
       tasks: {
         Row: {
           color: string | null
+          created_at: string | null
           due_date: string
           end_time: string | null
           icon: string | null
@@ -244,6 +245,7 @@ export type Database = {
         }
         Insert: {
           color?: string | null
+          created_at?: string | null
           due_date: string
           end_time?: string | null
           icon?: string | null
@@ -255,6 +257,7 @@ export type Database = {
         }
         Update: {
           color?: string | null
+          created_at?: string | null
           due_date?: string
           end_time?: string | null
           icon?: string | null
