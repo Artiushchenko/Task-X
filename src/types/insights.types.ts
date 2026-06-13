@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import type { TProjectWithSlug } from './project.types'
+import type { TProjectWithSlug } from './project/project.types'
 
 export interface IMetricItem {
 	id: string

@@ -7,7 +7,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import type { TProjectsList } from '@/types/project.types'
+import type { TProjectsList } from '@/types/project/project.types'
 
 interface Props {
 	projects: TProjectsList

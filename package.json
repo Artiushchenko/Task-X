@@ -62,8 +62,11 @@
 			"bg-violet-500",
 			"bg-yellow-300",
 			"bg-yellow-400",
-			"bg-emerald-600",
 			"bg-amber-400",
+			"bg-red-500",
+			"bg-blue-500",
+			"bg-indigo-500",
+			"bg-emerald-600",
 			"bg-card",
 			"dark:bg-card"
 		]

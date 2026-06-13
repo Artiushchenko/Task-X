@@ -8,7 +8,7 @@ import { ProjectStatistics } from './project-statistics/ProjectStatistics'
 import { Button } from '@/components/ui/button'
 import { Heading } from '@/components/ui/Heading'
 import { isGlobalSearchOpenAtom } from '@/store/store'
-import type { TProjectsList } from '@/types/project.types'
+import type { TProjectsList } from '@/types/project/project.types'
 import type {
 	TGetProjectsChartDataResponse,
 	TGetProjectsStatsResponse

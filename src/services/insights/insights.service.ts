@@ -4,7 +4,7 @@ import type {
 	ITasksByStatus,
 	ITopProject
 } from '@/types/insights.types'
-import type { TProjectInsight } from '@/types/project.types'
+import type { TProjectInsight } from '@/types/project/project.types'
 
 class InsightsService {
 	private calculateMetrics(projects: TProjectInsight[]) {

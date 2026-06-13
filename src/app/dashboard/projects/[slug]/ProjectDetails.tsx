@@ -1,6 +1,6 @@
 import { TaskList } from '@/components/elements/TaskList'
 import { Heading } from '@/components/ui/Heading'
-import type { TProjectWithSlug } from '@/types/project.types'
+import type { TProjectWithSlug } from '@/types/project/project.types'
 
 interface Props {
 	project: TProjectWithSlug

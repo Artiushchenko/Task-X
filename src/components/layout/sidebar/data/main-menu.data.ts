@@ -1,7 +1,7 @@
 import { ChartNoAxesColumn } from '@/components/animate-ui/icons/chart-no-axes-column'
 import { ClipboardList } from '@/components/animate-ui/icons/clipboard-list'
+import { Layers } from '@/components/animate-ui/icons/layers'
 import { LayoutDashboard } from '@/components/animate-ui/icons/layout-dashboard'
-import { MessageCircleMore } from '@/components/animate-ui/icons/message-circle-more'
 import { Settings } from '@/components/animate-ui/icons/settings'
 import { UsersRound } from '@/components/animate-ui/icons/users-round'
 import { DashboardPages } from '@/config/dashboard-pages'
@@ -15,9 +15,9 @@ export const MAIN_MENU: IMenuItem[] = [
 		href: DashboardPages.DASHBOARD
 	},
 	{
-		icon: MessageCircleMore,
-		label: 'Messages',
-		href: DashboardPages.MESSAGES
+		icon: Layers,
+		label: 'Projects',
+		href: DashboardPages.PROJECTS
 	},
 	{
 		icon: ChartNoAxesColumn,

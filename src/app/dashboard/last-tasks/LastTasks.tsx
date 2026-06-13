@@ -2,7 +2,7 @@
 
 import { TaskList } from '@/components/elements/TaskList'
 import { getClientTasks } from '@/services/tasks/task-client.service'
-import type { TProjectsList } from '@/types/project.types'
+import type { TProjectsList } from '@/types/project/project.types'
 import type {
 	TClientTasksResponse,
 	TTaskSortBy,
