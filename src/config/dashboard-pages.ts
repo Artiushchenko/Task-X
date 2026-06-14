@@ -21,6 +21,6 @@ export class DashboardPages {
 	static INSIGHT = `${DashboardPages.BASE}/insight`
 	static TEAM = `${DashboardPages.BASE}/team`
 	static SCHEDULE = `${DashboardPages.BASE}/schedule`
-	static REPORT = `${DashboardPages.BASE}/report`
+	static ACTIVITIES = `${DashboardPages.BASE}/activities`
 	static SETTINGS = `${DashboardPages.BASE}/settings`
 }

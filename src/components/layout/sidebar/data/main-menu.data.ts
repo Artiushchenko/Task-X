@@ -1,5 +1,5 @@
+import { Activity } from '@/components/animate-ui/icons/activity'
 import { ChartNoAxesColumn } from '@/components/animate-ui/icons/chart-no-axes-column'
-import { ClipboardList } from '@/components/animate-ui/icons/clipboard-list'
 import { Layers } from '@/components/animate-ui/icons/layers'
 import { LayoutDashboard } from '@/components/animate-ui/icons/layout-dashboard'
 import { Settings } from '@/components/animate-ui/icons/settings'
@@ -35,9 +35,9 @@ export const MAIN_MENU: IMenuItem[] = [
 		href: DashboardPages.SCHEDULE
 	},
 	{
-		icon: ClipboardList,
-		label: 'Report',
-		href: DashboardPages.REPORT
+		icon: Activity,
+		label: 'Activities',
+		href: DashboardPages.ACTIVITIES
 	},
 	{
 		icon: Settings,
