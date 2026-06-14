@@ -16,6 +16,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { ProgressBar } from '../ProgressBar'
+import { ExportTaskDialog } from './ExportTaskDialog'
 
 interface Props {
 	task: TTask
@@ -174,6 +175,8 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 								<Brush size={18} />
 							</Link>
 						</AnimateIcon>
+
+						<ExportTaskDialog task={task} />
 					</div>
 				</div>
 			)}
