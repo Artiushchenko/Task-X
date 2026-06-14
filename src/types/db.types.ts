@@ -48,16 +48,19 @@ export type Database = {
           avatar_path: string | null
           id: string
           name: string | null
+          role: Database["public"]["Enums"]["user_role"] | null
         }
         Insert: {
           avatar_path?: string | null
           id: string
           name?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
         }
         Update: {
           avatar_path?: string | null
           id?: string
           name?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
         }
         Relationships: []
       }
@@ -292,7 +295,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "owner" | "admin" | "member"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -419,6 +422,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["owner", "admin", "member"],
+    },
   },
 } as const
