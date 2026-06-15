@@ -5,6 +5,7 @@ import { Plus } from '@/components/animate-ui/icons/plus'
 import { DashboardPages } from '@/config/dashboard-pages'
 import { getProjects } from '@/services/projects/project-client.service'
 import type { TProjectsList } from '@/types/project/project.types'
+import type { TRole } from '@/types/role.types'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -13,9 +14,10 @@ import { ProjectListCard } from './ProjectListCard'
 
 interface Props {
 	projects: TProjectsList
+	userRole: TRole | null
 }
 
-export function ProjectList({ projects }: Props) {
+export function ProjectList({ projects, userRole }: Props) {
 	const searchParams = useSearchParams()
 
 	const editId = searchParams.get('edit')
@@ -34,6 +36,7 @@ export function ProjectList({ projects }: Props) {
 					<ProjectListCard
 						key={project.id}
 						project={project}
+						userRole={userRole}
 					/>
 				))}
 

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Heading } from '@/components/ui/Heading'
 import { NO_INDEX_PAGE } from '@/constants/seo.constants'
 import { getServerProjects } from '@/services/projects/project-server.service'
+import { getServerUserRole } from '@/utils/supabase/get-server-user-role'
 import { ProjectList } from './ProjectList'
 
 export const metadata: Metadata = {
@@ -11,7 +12,12 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-	const { data: projects, error } = await getServerProjects()
+	const [projectResult, role] = await Promise.all([
+		getServerProjects(),
+		getServerUserRole()
+	])
+
+	const { data: projects, error } = projectResult
 
 	if (error || !projects) {
 		return (
@@ -32,7 +38,10 @@ export default async function Page() {
 				</p>
 			</div>
 
-			<ProjectList projects={projects} />
+			<ProjectList
+				projects={projects}
+				userRole={role}
+			/>
 		</div>
 	)
 }

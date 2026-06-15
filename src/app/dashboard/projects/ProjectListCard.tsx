@@ -1,6 +1,7 @@
 import { ExternalLink } from '@/components/animate-ui/icons/external-link'
 import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { Trash2 } from '@/components/animate-ui/icons/trash-2'
+import PermissionGuard from '@/components/guards/PermissionGuard'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -16,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { DashboardPages } from '@/config/dashboard-pages'
 import { useProjectDelete } from '@/hooks/project/useProjectDelete'
 import type { TProject } from '@/types/project/project.types'
+import type { TRole } from '@/types/role.types'
 import { Edit } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -23,9 +25,10 @@ import { useMemo } from 'react'
 
 interface Props {
 	project: TProject
+	userRole: TRole | null
 }
 
-export function ProjectListCard({ project }: Props) {
+export function ProjectListCard({ project, userRole }: Props) {
 	const { isDeleting, deleteProject } = useProjectDelete()
 	const router = useRouter()
 
@@ -79,41 +82,46 @@ export function ProjectListCard({ project }: Props) {
 					Edit
 				</Button>
 
-				<AlertDialog>
-					<AlertDialogTrigger asChild>
-						<AnimateIcon animateOnHover>
-							<Button
-								variant='outline'
-								size='sm'
-								disabled={isDeleting}
-							>
-								<Trash2 className='h-4 w-4' />
-							</Button>
-						</AnimateIcon>
-					</AlertDialogTrigger>
+				<PermissionGuard
+					userRole={userRole}
+					permission='canDeleteProjects'
+				>
+					<AlertDialog>
+						<AlertDialogTrigger asChild>
+							<AnimateIcon animateOnHover>
+								<Button
+									variant='outline'
+									size='sm'
+									disabled={isDeleting}
+								>
+									<Trash2 className='h-4 w-4' />
+								</Button>
+							</AnimateIcon>
+						</AlertDialogTrigger>
 
-					<AlertDialogContent>
-						<AlertDialogHeader>
-							<AlertDialogTitle>Delete "{project.name}"?</AlertDialogTitle>
+						<AlertDialogContent>
+							<AlertDialogHeader>
+								<AlertDialogTitle>Delete "{project.name}"?</AlertDialogTitle>
 
-							<AlertDialogDescription>
-								This will permanently delete the project und all its tasks. This
-								action cannot be undone
-							</AlertDialogDescription>
-						</AlertDialogHeader>
+								<AlertDialogDescription>
+									This will permanently delete the project und all its tasks.
+									This action cannot be undone
+								</AlertDialogDescription>
+							</AlertDialogHeader>
 
-						<AlertDialogFooter>
-							<AlertDialogCancel>Cancel</AlertDialogCancel>
+							<AlertDialogFooter>
+								<AlertDialogCancel>Cancel</AlertDialogCancel>
 
-							<AlertDialogAction
-								onClick={() => deleteProject(project.id)}
-								className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
-							>
-								Delete
-							</AlertDialogAction>
-						</AlertDialogFooter>
-					</AlertDialogContent>
-				</AlertDialog>
+								<AlertDialogAction
+									onClick={() => deleteProject(project.id)}
+									className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+								>
+									Delete
+								</AlertDialogAction>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+					</AlertDialog>
+				</PermissionGuard>
 			</div>
 		</div>
 	)

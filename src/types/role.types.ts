@@ -2,12 +2,13 @@ import type { Database } from './db.types'
 
 export type TRole = Database['public']['Enums']['user_role']
 
-interface IPermission {
+export interface IPermission {
 	canManageTeam: boolean
 	canManageProjects: boolean
 	canViewInsights: boolean
 	canDeleteProjects: boolean
 	canManageRoles: boolean
+	canManageAdminSide: boolean
 }
 
 export const ROLE_PERMISSIONS: Record<TRole, IPermission> = {
@@ -16,21 +17,24 @@ export const ROLE_PERMISSIONS: Record<TRole, IPermission> = {
 		canManageProjects: true,
 		canViewInsights: true,
 		canDeleteProjects: true,
-		canManageRoles: true
+		canManageRoles: true,
+		canManageAdminSide: true
 	},
 	admin: {
 		canManageTeam: true,
 		canManageProjects: true,
 		canViewInsights: true,
 		canDeleteProjects: true,
-		canManageRoles: false
+		canManageRoles: false,
+		canManageAdminSide: false
 	},
 	member: {
 		canManageTeam: false,
 		canManageProjects: true,
 		canViewInsights: false,
 		canDeleteProjects: false,
-		canManageRoles: false
+		canManageRoles: false,
+		canManageAdminSide: false
 	}
 } as const
 
