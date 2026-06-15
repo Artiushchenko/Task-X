@@ -61,7 +61,10 @@ export const SubTaskCreateModal = ({ taskId }: Props) => {
 			onOpenChange={setIsOpenModal}
 		>
 			<AnimateIcon animateOnHover>
-				<DialogTrigger className='bg-primary hover:bg-primary/90 rounded-full p-2 text-white transition-colors dark:text-neutral-800'>
+				<DialogTrigger
+					className='bg-primary hover:bg-primary/90 rounded-full p-2 text-white transition-colors dark:text-neutral-800'
+					data-testid='create-subtask-button'
+				>
 					<Plus
 						size={18}
 						animateOnHover
@@ -77,11 +80,13 @@ export const SubTaskCreateModal = ({ taskId }: Props) => {
 							value={title}
 							onChange={e => setTitle(e.target.value)}
 							className='mb-4'
+							data-testid='subtask-title-input'
 						/>
 
 						<Button
 							onClick={handleAdd}
 							disabled={isPending}
+							data-testid='submit-subtask-button'
 						>
 							{isPending ? 'Creating...' : 'Create'}
 						</Button>

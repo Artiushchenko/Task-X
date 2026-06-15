@@ -54,6 +54,8 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 
 	return (
 		<div
+			data-testid='task-card'
+			data-task-id={task.id}
 			className={cn(
 				'bg-card rounded-xl p-3.5',
 				isColor && task.color,
@@ -128,7 +130,10 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 
 			{!isMinimal && (
 				<div className='mb-4'>
-					<ProgressBar progress={progress} />
+					<ProgressBar
+						progress={progress}
+						data-testid='task-progress'
+					/>
 				</div>
 			)}
 
@@ -171,6 +176,7 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 								href={DashboardPages.TASK_EDIT(task.id)}
 								className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
 								aria-label={`Edit task: ${task.title}`}
+								data-testid='edit-task-button'
 							>
 								<Brush size={18} />
 							</Link>

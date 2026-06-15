@@ -6,7 +6,7 @@ interface Props {
 	progress: number
 }
 
-export function ProgressBar({ progress }: Props) {
+export function ProgressBar({ progress, ...rest }: Props) {
 	const clamped = Math.min(100, Math.max(0, progress))
 
 	const progressText = useMemo(() => {
@@ -43,7 +43,10 @@ export function ProgressBar({ progress }: Props) {
 	}, [clamped])
 
 	return (
-		<div className='bg-primary/10 relative h-12 w-full overflow-hidden rounded-full'>
+		<div
+			className='bg-primary/10 relative h-12 w-full overflow-hidden rounded-full'
+			{...rest}
+		>
 			<div
 				className={cn(
 					'flex h-full cursor-default items-center justify-center rounded-full bg-size-[56px_56px] font-medium text-white transition-all duration-700 ease-in-out',
