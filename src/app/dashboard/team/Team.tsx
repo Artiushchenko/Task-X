@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading } from '@/components/ui/Heading'
+import { PageHeader } from '@/components/ui/PageHeader'
 import type { ITeamMember } from '@/services/team/team-server.service'
 import { Crown, ShieldCheck, Users, UsersIcon } from 'lucide-react'
 import { useMemo } from 'react'
@@ -29,14 +29,10 @@ export function Team({ members, currentUserId }: Props) {
 
 	return (
 		<div className='h-screen overflow-y-auto p-5'>
-			{/* TODO: Made a separated UI component */}
-			<div className='mb-6'>
-				<Heading>Team</Heading>
-
-				<p className='text-muted-foreground mt-1 text-sm'>
-					Manage your team members and roles
-				</p>
-			</div>
+			<PageHeader
+				title='Team'
+				description='Manage your team members and roles'
+			/>
 
 			<div className='mb-6 grid grid-cols-4 gap-4'>
 				<TopStatisticsCard

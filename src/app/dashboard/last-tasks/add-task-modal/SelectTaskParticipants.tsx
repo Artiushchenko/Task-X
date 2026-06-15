@@ -112,7 +112,7 @@ export function SelectTaskParticipants({ value = [], onChange }: Props) {
 
 			<PopoverContent
 				align='start'
-				className='w-87.5 p-0'
+				className='w-(--radix-popover-trigger-width) p-0'
 			>
 				<Command>
 					<CommandInput

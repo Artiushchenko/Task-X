@@ -39,7 +39,7 @@ export function ProgressBar({ progress, ...rest }: Props) {
 			return 'bg-rose-400'
 		}
 
-		return 'bg-neutral-300'
+		return 'bg-neutral-300 dark:bg-neutral-700'
 	}, [clamped])
 
 	return (

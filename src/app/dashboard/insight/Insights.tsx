@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading } from '@/components/ui/Heading'
+import { PageHeader } from '@/components/ui/PageHeader'
 import type { IInsightsData } from '@/types/insights.types'
 import { getMetricCards } from '@/utils/get-metric-cards'
 import { useMemo } from 'react'
@@ -21,13 +21,10 @@ export function Insights({ data }: Props) {
 
 	return (
 		<div className='h-screen overflow-y-auto p-5'>
-			<div className='mb-6'>
-				<Heading>Insights</Heading>
-
-				<p className='text-muted-foreground mt-1 text-sm'>
-					Overview of all your projects and tasks
-				</p>
-			</div>
+			<PageHeader
+				title='Insights'
+				description='Overview of all your projects and tasks'
+			/>
 
 			<div className='mb-4'>
 				<InsightsMetrics metricItems={metricItems} />

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
-import { Heading } from '@/components/ui/Heading'
+import { ErrorState } from '@/components/ui/ErrorState'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { NO_INDEX_PAGE } from '@/constants/seo.constants'
 import { getServerProjects } from '@/services/projects/project-server.service'
 import { getServerUserRole } from '@/utils/supabase/get-server-user-role'
@@ -20,23 +21,15 @@ export default async function Page() {
 	const { data: projects, error } = projectResult
 
 	if (error || !projects) {
-		return (
-			// TODO: Refactor
-			<div className='flex h-screen items-center justify-center p-5'>
-				<p className='text-muted-foreground'>Failed to load projects</p>
-			</div>
-		)
+		return <ErrorState message='Failed to load projects' />
 	}
 
 	return (
 		<div className='h-screen overflow-y-auto p-5'>
-			<div className='mb-6'>
-				<Heading>Projects</Heading>
-
-				<p className='text-muted-foreground mt-1 text-sm'>
-					Manage all your projects
-				</p>
-			</div>
+			<PageHeader
+				title='Projects'
+				description='Manage all your projects'
+			/>
 
 			<ProjectList
 				projects={projects}

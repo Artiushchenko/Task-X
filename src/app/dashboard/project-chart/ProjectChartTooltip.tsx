@@ -11,7 +11,7 @@ export function ProjectChartTooltip({ active, payload }: Props) {
 	}
 
 	return (
-		<div className='bg-primary rounded-2xl px-2.5 py-1.5 text-sm font-medium text-white shadow dark:text-neutral-800'>
+		<div className='bg-primary rounded-2xl px-2.5 py-1.5 text-sm font-medium text-white shadow'>
 			{payload[0].value} Projects
 		</div>
 	)

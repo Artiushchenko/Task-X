@@ -46,7 +46,7 @@ export function SelectTaskProject({ value, onChange }: Props) {
 					variant='outline'
 					role='combobox'
 					aria-expanded={isOpen}
-					className='w-50 justify-between'
+					className='w-full justify-between'
 				>
 					{isPending
 						? 'Loading...'
@@ -56,7 +56,7 @@ export function SelectTaskProject({ value, onChange }: Props) {
 					<ChevronsUpDown className='opacity-50' />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className='w-50 p-0'>
+			<PopoverContent className='w-(--radix-popover-trigger-width) p-0'>
 				<Command>
 					<CommandInput
 						placeholder='Search project...'

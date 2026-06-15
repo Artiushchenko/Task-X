@@ -26,7 +26,6 @@ interface Props {
 }
 
 export function ExportTaskDialog({ task }: Props) {
-	// TODO: Replace to useClickOutside
 	const [isOpenModal, setIsOpenModal] = useState(false)
 	const [isExporting, setIsExporting] = useState(false)
 

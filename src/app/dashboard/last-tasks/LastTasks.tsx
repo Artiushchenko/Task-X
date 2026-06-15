@@ -1,6 +1,7 @@
 'use client'
 
 import { TaskList } from '@/components/elements/TaskList'
+import { Button } from '@/components/ui/button'
 import { getClientTasks } from '@/services/tasks/task-client.service'
 import type { TProjectsList } from '@/types/project/project.types'
 import type {
@@ -24,6 +25,7 @@ export const LastTasks = ({ projects, tasks }: Props) => {
 	const [currentProjectId, setCurrentProjectId] = useState<string | null>(null)
 	const [status, setStatus] = useState<TTaskStatus | undefined>(undefined)
 	const [sort, setSort] = useState<TTaskSortBy>('asc')
+	const [expanded, setExpanded] = useState(false)
 
 	const { data, isFetching, refetch } = useQuery({
 		queryKey: ['last-tasks', currentProjectId, status, sort],
@@ -35,6 +37,10 @@ export const LastTasks = ({ projects, tasks }: Props) => {
 			}),
 		placeholderData: tasks
 	})
+
+	const tasksData = data || []
+	const visibleTasks = expanded ? tasksData : tasksData.slice(0, 3)
+	const hasMore = tasksData.length > 3
 
 	return (
 		<div className='mb-4'>
@@ -71,8 +77,20 @@ export const LastTasks = ({ projects, tasks }: Props) => {
 
 			<TaskList
 				isFetching={isFetching}
-				tasks={data || []}
+				tasks={visibleTasks || []}
 			/>
+
+			{hasMore && (
+				<div className='mt-3 flex justify-center'>
+					<Button
+						onClick={() => setExpanded(v => !v)}
+						aria-expanded={expanded}
+						aria-controls='last-tasks-list'
+					>
+						{expanded ? 'Show less' : `Show ${tasksData.length - 3} more`}
+					</Button>
+				</div>
+			)}
 		</div>
 	)
 }

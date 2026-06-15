@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading } from '@/components/ui/Heading'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { scheduleService } from '@/services/schedule/schedule.service'
 import type { TScheduleTask } from '@/types/schedule.types'
 import { useMemo, useState } from 'react'
@@ -31,13 +31,10 @@ export function Schedule({ tasks }: Props) {
 
 	return (
 		<div className='h-screen overflow-y-auto p-5'>
-			<div className='mb-6'>
-				<Heading>Schedule</Heading>
-
-				<p className='text-muted-foreground mt-1 text-sm'>
-					View and manage your tasks by date
-				</p>
-			</div>
+			<PageHeader
+				title='Schedule'
+				description='View and manage your tasks by date'
+			/>
 
 			<div className='grid grid-cols-[400px_1fr] gap-4'>
 				<ScheduleCalendar

@@ -13,7 +13,7 @@ export function ProjectStatisticsCard({ projectStatistics, isLast }: Props) {
 		<div
 			className={cn(
 				projectStatistics.bg_color,
-				'relative overflow-hidden rounded-2xl p-5'
+				'relative h-30 overflow-hidden rounded-2xl p-5'
 			)}
 		>
 			<div className='relative z-10 flex items-center justify-between'>

@@ -46,7 +46,7 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 		[task.due_date]
 	)
 
-	// participants logic
+	/* Participants logic */
 	const participants = task.task_participants.filter(u => Boolean(u.profiles))
 
 	const visibleParticipants = participants.slice(0, 3)
