@@ -32,14 +32,20 @@ export function useTaskQueries({ id, reset, closeModal }: Props) {
 		reset({
 			title: data.title,
 			due_date: new Date(data.due_date),
-			icon: data.icon as keyof typeof ICON_MAP
+			icon: data.icon as keyof typeof ICON_MAP,
+			participants: data.task_participants?.map(item => item.profiles.id) ?? []
 		})
 	}, [isSuccess])
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['task', 'update', id],
-		mutationFn: (data: Database['public']['Tables']['tasks']['Update']) =>
-			taskClientUpdate(id, data),
+		mutationFn: ({
+			task,
+			participants
+		}: {
+			task: Database['public']['Tables']['tasks']['Update']
+			participants: string[]
+		}) => taskClientUpdate(id, task, participants),
 		onSuccess: () => {
 			toast.success('Task updated successfully')
 			closeModal()
@@ -53,6 +59,7 @@ export function useTaskQueries({ id, reset, closeModal }: Props) {
 
 	return {
 		isPending,
-		mutate
+		mutate,
+		data
 	}
 }

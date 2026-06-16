@@ -2,7 +2,6 @@ import Image from 'next/image'
 
 import { useChat } from '@/hooks/useChat'
 import { useMemo } from 'react'
-import { USERS } from '../data/users.data'
 import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 
@@ -35,24 +34,7 @@ export function Chat({ userId }: Props) {
 			/>
 
 			<div className='flex min-h-0 flex-1 flex-col'>
-				<div className='flex items-center gap-2 bg-[#453c9c] px-3.5 py-3'>
-					<Image
-						alt='Chat partner'
-						src={USERS[7].avatarPath || ''}
-						width={40}
-						height={40}
-						className='h-10! shrink-0 rounded-full object-cover'
-						draggable={false}
-						unoptimized
-					/>
-
-					<div className='leading-snug text-white'>
-						<div className='font-medium'>{USERS[6].name}</div>
-						<div className='text-xs font-medium opacity-70'>
-							Project Manager
-						</div>
-					</div>
-				</div>
+				<div className='bg-[#453c9c] p-3.5 text-center uppercase'>Chat</div>
 
 				<div className='flex-1 overflow-y-auto bg-[#3c3495] px-3.5 py-3'>
 					<div className='flex flex-col gap-4.5'>{renderedMessages}</div>

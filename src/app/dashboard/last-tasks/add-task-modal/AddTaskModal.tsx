@@ -1,12 +1,6 @@
 import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import {
 	Form,
 	FormControl,
@@ -16,11 +10,12 @@ import {
 	FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Modal } from '@/components/ui/modal'
 import { useAddTask } from '@/hooks/useAddTask'
 import { TaskSchema } from '@/zod-schemes/task.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { Controller, useForm, type SubmitHandler } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import type z from 'zod'
 import { TaskDateField } from '../../@modals/(.)task/[id]/edit/TaskDateField'
 import { TaskIconChooseField } from '../../@modals/(.)task/[id]/edit/TaskIconChooseField'
@@ -83,68 +78,84 @@ export function AddTaskModal({ refetch }: Props) {
 					<Button variant='outline'>Add task</Button>
 				</DialogTrigger>
 			</AnimateIcon>
-			<DialogContent className='max-w-sm!'>
-				<DialogHeader>
-					<DialogTitle className='mb-4'>Create new task</DialogTitle>
 
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onSubmit)}
-							className='space-y-8'
+			<Modal
+				title='Create task'
+				description='Fill in the details to create a new task'
+			>
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className='space-y-6'
+					>
+						<FormField
+							control={form.control}
+							name='title'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Title</FormLabel>
+									<FormControl>
+										<Input
+											placeholder='Enter task title'
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name='project_id'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Project</FormLabel>
+
+									<FormControl>
+										<SelectTaskProject
+											value={field.value}
+											onChange={field.onChange}
+										/>
+									</FormControl>
+
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name='participants'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Participants</FormLabel>
+
+									<FormControl>
+										<SelectTaskParticipants
+											value={field.value}
+											onChange={field.onChange}
+										/>
+									</FormControl>
+
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<TaskDateField control={form.control} />
+
+						<TaskIconChooseField control={form.control} />
+
+						<Button
+							type='submit'
+							disabled={isPending}
 						>
-							<FormField
-								control={form.control}
-								name='title'
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Title</FormLabel>
-										<FormControl>
-											<Input
-												placeholder='Enter task title'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<Controller
-								name='project_id'
-								control={form.control}
-								render={({ field }) => (
-									<SelectTaskProject
-										value={field.value}
-										onChange={field.onChange}
-									/>
-								)}
-							/>
-
-							<Controller
-								name='participants'
-								control={form.control}
-								render={({ field }) => (
-									<SelectTaskParticipants
-										value={field.value}
-										onChange={field.onChange}
-									/>
-								)}
-							/>
-
-							<TaskDateField control={form.control} />
-
-							<TaskIconChooseField control={form.control} />
-
-							<Button
-								type='submit'
-								disabled={isPending}
-							>
-								{isPending ? 'Creating...' : 'Add'}
-							</Button>
-						</form>
-					</Form>
-				</DialogHeader>
-			</DialogContent>
+							{isPending ? 'Creating...' : 'Add'}
+						</Button>
+					</form>
+				</Form>
+			</Modal>
 		</Dialog>
 	)
 }

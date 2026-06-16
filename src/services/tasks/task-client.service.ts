@@ -9,6 +9,12 @@ import type {
 } from '@/types/task.types'
 import { createClient } from '@/utils/supabase/client'
 
+const TASK_SELECT_QUERY = `
+	*, 
+	subtasks(*), 
+	task_participants(profiles(*))
+`
+
 function filterTasks(tasks: TTask[], status: TTaskStatus) {
 	return tasks.filter(task => {
 		switch (status) {
@@ -36,9 +42,7 @@ export async function getClientTasks({
 	status?: TTaskStatus
 	sortByDueDate?: TTaskSortBy
 }) {
-	let query = createClient()
-		.from('tasks')
-		.select(`*, subtasks(*), task_participants(profiles(*))`)
+	let query = createClient().from('tasks').select(TASK_SELECT_QUERY)
 
 	if (projectId) {
 		query = query.eq('project_id', projectId)
@@ -66,7 +70,7 @@ export async function getClientTasks({
 export async function taskClientGetById(id: string) {
 	const { data, error } = await createClient()
 		.from('tasks')
-		.select(`*, subtasks(*)`)
+		.select(TASK_SELECT_QUERY)
 		.eq('id', id)
 		.single()
 
@@ -75,6 +79,34 @@ export async function taskClientGetById(id: string) {
 	}
 
 	return data
+}
+
+async function syncTaskParticipants(taskId: string, participants: string[]) {
+	const client = createClient()
+
+	const { error: deleteError } = await client
+		.from('task_participants')
+		.delete()
+		.eq('task_id', taskId)
+
+	if (deleteError) {
+		throw new Error(deleteError.message)
+	}
+
+	if (!participants.length) {
+		return
+	}
+
+	const { error: insertError } = await client.from('task_participants').insert(
+		participants.map(profile_id => ({
+			task_id: taskId,
+			profile_id
+		}))
+	)
+
+	if (insertError) {
+		throw new Error(insertError.message)
+	}
 }
 
 export async function taskClientCreate({
@@ -91,27 +123,15 @@ export async function taskClientCreate({
 		throw new Error(error.message || 'Failed to create task')
 	}
 
-	if (participants.length > 0) {
-		const { error: participantsError } = await createClient()
-			.from('task_participants')
-			.insert(
-				participants.map(profile_id => ({
-					task_id: data.id,
-					profile_id
-				}))
-			)
-
-		if (participantsError) {
-			throw new Error(participantsError.message || 'Failed to add participants')
-		}
-	}
+	await syncTaskParticipants(data.id, participants)
 
 	return data
 }
 
 export async function taskClientUpdate(
 	id: string,
-	task: Database['public']['Tables']['tasks']['Update']
+	task: Database['public']['Tables']['tasks']['Update'],
+	participants: string[] = []
 ) {
 	const { data, error } = await createClient()
 		.from('tasks')
@@ -123,6 +143,8 @@ export async function taskClientUpdate(
 	if (error || !data) {
 		throw new Error(error.message || 'Failed to update task')
 	}
+
+	await syncTaskParticipants(id, participants)
 
 	return data
 }

@@ -1,12 +1,24 @@
 import type { TChatMessageWithProfile } from '@/types/chat.types'
 import { cn } from '@/utils'
-import { format } from 'date-fns'
+import { format, isToday, isYesterday } from 'date-fns'
 import Image from 'next/image'
 import { memo } from 'react'
 
 interface Props {
 	message: TChatMessageWithProfile
 	userId: string
+}
+
+function formatMessageDate(date: Date) {
+	if (isToday(date)) {
+		return `Today ${format(date, 'hh:mm a')}`
+	}
+
+	if (isYesterday(date)) {
+		return `Yesterday ${format(date, 'hh:mm a')}`
+	}
+
+	return format(date, 'dd.MM.yyyy hh:mm a')
 }
 
 function ChatMessage({ message, userId }: Props) {
@@ -38,7 +50,7 @@ function ChatMessage({ message, userId }: Props) {
 						<span className='space-x-1'>
 							<span className='opacity-60'>
 								{message.created_at
-									? format(new Date(message.created_at), 'hh:mm a')
+									? formatMessageDate(new Date(message.created_at))
 									: ''}
 							</span>{' '}
 							<span className='font-medium'>Me</span>
@@ -48,7 +60,7 @@ function ChatMessage({ message, userId }: Props) {
 							<span className='font-medium'>{message.profile?.name}</span>{' '}
 							<span className='opacity-60'>
 								{message.created_at
-									? format(new Date(message.created_at), 'hh:mm a')
+									? formatMessageDate(new Date(message.created_at))
 									: ''}
 							</span>
 						</span>

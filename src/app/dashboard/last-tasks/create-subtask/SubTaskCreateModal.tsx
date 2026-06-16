@@ -3,15 +3,9 @@
 import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { Plus } from '@/components/animate-ui/icons/plus'
 import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { Modal } from '@/components/ui/modal'
 import { createSubTask } from '@/services/tasks/task-client.service'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
@@ -71,28 +65,28 @@ export const SubTaskCreateModal = ({ taskId }: Props) => {
 					/>
 				</DialogTrigger>
 			</AnimateIcon>
-			<DialogContent className='max-w-sm!'>
-				<DialogHeader>
-					<DialogTitle className='mb-4'>Create subtask</DialogTitle>
-					<DialogDescription>
-						<Input
-							placeholder='Title'
-							value={title}
-							onChange={e => setTitle(e.target.value)}
-							className='mb-4'
-							data-testid='subtask-title-input'
-						/>
 
-						<Button
-							onClick={handleAdd}
-							disabled={isPending}
-							data-testid='submit-subtask-button'
-						>
-							{isPending ? 'Creating...' : 'Create'}
-						</Button>
-					</DialogDescription>
-				</DialogHeader>
-			</DialogContent>
+			<Modal
+				title='Create subtask'
+				description='Fill in the details to create a new subtask'
+			>
+				<div className='space-y-4'>
+					<Input
+						placeholder='Title'
+						value={title}
+						onChange={e => setTitle(e.target.value)}
+						data-testid='subtask-title-input'
+					/>
+
+					<Button
+						onClick={handleAdd}
+						disabled={isPending}
+						data-testid='submit-subtask-button'
+					>
+						{isPending ? 'Creating...' : 'Create'}
+					</Button>
+				</div>
+			</Modal>
 		</Dialog>
 	)
 }

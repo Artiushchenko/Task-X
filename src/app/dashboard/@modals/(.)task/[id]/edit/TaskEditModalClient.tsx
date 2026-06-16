@@ -17,6 +17,9 @@ import { useTaskQueries } from '@/hooks/task-edit-modal/useTaskQueries'
 import { TaskSchema } from '@/zod-schemes/task.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { SelectTaskParticipants } from '@/app/dashboard/last-tasks/add-task-modal/SelectTaskParticipants'
+import { Dialog } from '@/components/ui/dialog'
+import { Modal } from '@/components/ui/modal'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 import { TaskDateField } from './TaskDateField'
@@ -34,11 +37,12 @@ export const TaskEditModalClient = ({ id }: Props) => {
 		defaultValues: {
 			title: '',
 			due_date: undefined,
-			icon: undefined
+			icon: undefined,
+			participants: []
 		}
 	})
 
-	const { isPending, mutate } = useTaskQueries({
+	const { isPending, mutate, data } = useTaskQueries({
 		id,
 		reset: form.reset,
 		closeModal
@@ -46,60 +50,80 @@ export const TaskEditModalClient = ({ id }: Props) => {
 
 	const onSubmit: SubmitHandler<z.infer<typeof TaskSchema>> = data => {
 		mutate({
-			title: data.title,
-			due_date: data.due_date.toISOString(),
-			icon: data.icon
+			task: {
+				title: data.title,
+				due_date: data.due_date.toISOString(),
+				icon: data.icon
+			},
+			participants: data.participants ?? []
 		})
 	}
 
 	return (
-		<div
-			className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
-			onClick={closeModal}
+		<Dialog
+			open
+			onOpenChange={open => {
+				if (!open) closeModal()
+			}}
 		>
-			<div
-				className='mx-4 max-h-[90vh] w-full max-w-sm overflow-y-auto rounded-lg bg-white p-6 dark:bg-neutral-800'
-				onClick={e => e.stopPropagation()}
+			<Modal
+				title='Edit task'
+				description={`Update the selected task "${data?.title}"`}
 			>
-				<div>
-					<h2 className='mb-4 text-xl font-bold'>Edit Task {id}</h2>
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className='space-y-6'
+					>
+						<FormField
+							control={form.control}
+							name='title'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Title</FormLabel>
+									<FormControl>
+										<Input
+											placeholder='Enter task title'
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onSubmit)}
-							className='space-y-8'
+						<FormField
+							control={form.control}
+							name='participants'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Participants</FormLabel>
+
+									<FormControl>
+										<SelectTaskParticipants
+											value={field.value}
+											onChange={field.onChange}
+										/>
+									</FormControl>
+
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<TaskDateField control={form.control} />
+
+						<TaskIconChooseField control={form.control} />
+
+						<Button
+							type='submit'
+							disabled={isPending}
 						>
-							<FormField
-								control={form.control}
-								name='title'
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Title</FormLabel>
-										<FormControl>
-											<Input
-												placeholder='Enter task title'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<TaskDateField control={form.control} />
-
-							<TaskIconChooseField control={form.control} />
-
-							<Button
-								type='submit'
-								disabled={isPending}
-							>
-								{isPending ? 'Updating...' : 'Save'}
-							</Button>
-						</form>
-					</Form>
-				</div>
-			</div>
-		</div>
+							{isPending ? 'Updating...' : 'Save'}
+						</Button>
+					</form>
+				</Form>
+			</Modal>
+		</Dialog>
 	)
 }

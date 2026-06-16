@@ -1,13 +1,8 @@
+'use client'
+
 import { Download } from '@/components/animate-ui/icons/download'
 import { AnimateIcon } from '@/components/animate-ui/icons/icon'
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import type { TTask } from '@/types/task.types'
 import {
 	downloadFile,
@@ -19,6 +14,7 @@ import {
 } from '@/utils/export-task'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { Modal } from '../modal'
 import { EXPORT_FORMATS, type TExportFormat } from './export-formats.data'
 
 interface Props {
@@ -95,15 +91,11 @@ export function ExportTaskDialog({ task }: Props) {
 				</AnimateIcon>
 			</DialogTrigger>
 
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Export task</DialogTitle>
-
-					<DialogDescription>
-						Choose a format to export "{task.title}"
-					</DialogDescription>
-				</DialogHeader>
-
+			<Modal
+				title='Export task'
+				description={`Choose a format to export "${task.title}"`}
+				size='md'
+			>
 				<div className='grid grid-cols-2 gap-4'>
 					{EXPORT_FORMATS.map(format => {
 						const Icon = format.icon
@@ -126,7 +118,7 @@ export function ExportTaskDialog({ task }: Props) {
 						)
 					})}
 				</div>
-			</DialogContent>
+			</Modal>
 		</Dialog>
 	)
 }

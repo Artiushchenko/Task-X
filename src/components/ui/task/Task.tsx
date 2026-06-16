@@ -7,11 +7,6 @@ import { cn } from '@/utils'
 import { ICON_MAP } from '@/utils/icon-map'
 import { parseTime } from '@/utils/parse-time'
 import { format, isToday } from 'date-fns'
-import {
-	Image as LucideImage,
-	Link as LucideLink,
-	MessageSquareMore
-} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo } from 'react'
@@ -138,52 +133,24 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 			)}
 
 			{!isMinimal && (
-				<div className='flex items-center justify-between'>
-					<div className='flex items-center gap-4'>
-						<span className='flex items-center gap-1 text-sm'>
-							<MessageSquareMore
-								size={16}
-								className='opacity-40'
-							/>
-							3
-						</span>
+				<div className='flex items-center justify-center gap-2'>
+					<SubTaskCreateModal taskId={task.id} />
 
-						<span className='flex items-center gap-1 text-sm'>
-							<LucideImage
-								size={16}
-								className='opacity-40'
-							/>
-							6
-						</span>
-
-						<span className='flex items-center gap-1 text-sm'>
-							<LucideLink
-								size={16}
-								className='opacity-40'
-							/>
-							2
-						</span>
-					</div>
-
-					<div className='flex items-center gap-2'>
-						<SubTaskCreateModal taskId={task.id} />
-
-						<AnimateIcon
-							animateOnHover
-							asChild
+					<AnimateIcon
+						animateOnHover
+						asChild
+					>
+						<Link
+							href={DashboardPages.TASK_EDIT(task.id)}
+							className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
+							aria-label={`Edit task: ${task.title}`}
+							data-testid='edit-task-button'
 						>
-							<Link
-								href={DashboardPages.TASK_EDIT(task.id)}
-								className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
-								aria-label={`Edit task: ${task.title}`}
-								data-testid='edit-task-button'
-							>
-								<Brush size={18} />
-							</Link>
-						</AnimateIcon>
+							<Brush size={18} />
+						</Link>
+					</AnimateIcon>
 
-						<ExportTaskDialog task={task} />
-					</div>
+					<ExportTaskDialog task={task} />
 				</div>
 			)}
 		</div>

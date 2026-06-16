@@ -46,7 +46,7 @@ export function SelectTaskProject({ value, onChange }: Props) {
 					variant='outline'
 					role='combobox'
 					aria-expanded={isOpen}
-					className='w-full justify-between'
+					className='text-muted-foreground w-full justify-between'
 				>
 					{isPending
 						? 'Loading...'

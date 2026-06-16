@@ -57,10 +57,7 @@ export function SelectTaskParticipants({ value = [], onChange }: Props) {
 				<div
 					role='combobox'
 					aria-expanded={isOpen}
-					className={cn(
-						'border-input bg-background flex min-h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 py-2 text-sm',
-						'hover:bg-accent/30 transition-colors'
-					)}
+					className='border-input bg-input/30 hover:bg-accent/30 flex min-h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 py-2 text-sm transition-colors'
 				>
 					<div className='flex flex-1 flex-wrap items-center gap-1'>
 						{isPending ? (
