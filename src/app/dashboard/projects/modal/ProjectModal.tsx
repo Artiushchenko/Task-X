@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useProjectMutations } from '@/hooks/project/useProjectMutations'
-import { useModalClose } from '@/hooks/task-edit-modal/useModalClose'
+import { useModalClose } from '@/hooks/task/edit-modal/useModalClose'
 import type { TFormProject } from '@/types/project/form.types'
 import { generateSlug } from '@/utils/generate-slug'
 import { ProjectSchema } from '@/zod-schemes/project.zod'

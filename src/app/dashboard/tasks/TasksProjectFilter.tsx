@@ -15,7 +15,7 @@ interface Props {
 	setCurrentProjectId: (projectId: string | null) => void
 }
 
-export const LastTasksProjectFilter = ({
+export const TasksProjectFilter = ({
 	projects,
 	currentProjectId,
 	setCurrentProjectId

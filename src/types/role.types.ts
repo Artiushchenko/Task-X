@@ -7,6 +7,7 @@ export interface IPermission {
 	canManageProjects: boolean
 	canViewInsights: boolean
 	canDeleteProjects: boolean
+	canDeleteTasks: boolean
 	canManageRoles: boolean
 	canManageAdminSide: boolean
 }
@@ -17,6 +18,7 @@ export const ROLE_PERMISSIONS: Record<TRole, IPermission> = {
 		canManageProjects: true,
 		canViewInsights: true,
 		canDeleteProjects: true,
+		canDeleteTasks: true,
 		canManageRoles: true,
 		canManageAdminSide: true
 	},
@@ -25,6 +27,7 @@ export const ROLE_PERMISSIONS: Record<TRole, IPermission> = {
 		canManageProjects: true,
 		canViewInsights: true,
 		canDeleteProjects: true,
+		canDeleteTasks: true,
 		canManageRoles: false,
 		canManageAdminSide: false
 	},
@@ -33,6 +36,7 @@ export const ROLE_PERMISSIONS: Record<TRole, IPermission> = {
 		canManageProjects: true,
 		canViewInsights: false,
 		canDeleteProjects: false,
+		canDeleteTasks: false,
 		canManageRoles: false,
 		canManageAdminSide: false
 	}

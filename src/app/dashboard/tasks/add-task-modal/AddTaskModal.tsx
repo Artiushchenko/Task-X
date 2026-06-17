@@ -1,7 +1,6 @@
-'use client'
-
+import { AnimateIcon } from '@/components/animate-ui/icons/icon'
 import { Button } from '@/components/ui/button'
-
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import {
 	Form,
 	FormControl,
@@ -11,26 +10,24 @@ import {
 	FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-
-import { useModalClose } from '@/hooks/task-edit-modal/useModalClose'
-import { useTaskQueries } from '@/hooks/task-edit-modal/useTaskQueries'
+import { Modal } from '@/components/ui/modal'
+import { useAddTask } from '@/hooks/useAddTask'
 import { TaskSchema } from '@/zod-schemes/task.zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import { SelectTaskParticipants } from '@/app/dashboard/last-tasks/add-task-modal/SelectTaskParticipants'
-import { Dialog } from '@/components/ui/dialog'
-import { Modal } from '@/components/ui/modal'
+import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { z } from 'zod'
-import { TaskDateField } from './TaskDateField'
-import { TaskIconChooseField } from './TaskIconChooseField'
+import type z from 'zod'
+import { TaskDateField } from '../../@modals/(.)tasks/[id]/edit/TaskDateField'
+import { TaskIconChooseField } from '../../@modals/(.)tasks/[id]/edit/TaskIconChooseField'
+import { SelectTaskParticipants } from './SelectTaskParticipants'
+import { SelectTaskProject } from './SelectTaskProject'
 
 interface Props {
-	id: string
+	refetch: () => void
 }
 
-export const TaskEditModalClient = ({ id }: Props) => {
-	const { closeModal } = useModalClose()
+export function AddTaskModal({ refetch }: Props) {
+	const [isOpenModal, setIsOpenModal] = useState(false)
 
 	const form = useForm<z.infer<typeof TaskSchema>>({
 		resolver: zodResolver(TaskSchema),
@@ -38,14 +35,17 @@ export const TaskEditModalClient = ({ id }: Props) => {
 			title: '',
 			due_date: undefined,
 			icon: undefined,
+			project_id: undefined,
 			participants: []
 		}
 	})
 
-	const { isPending, mutate, data } = useTaskQueries({
-		id,
-		reset: form.reset,
-		closeModal
+	const { isPending, mutate } = useAddTask({
+		closeModal: () => {
+			setIsOpenModal(false)
+			form.reset()
+			refetch()
+		}
 	})
 
 	const onSubmit: SubmitHandler<z.infer<typeof TaskSchema>> = data => {
@@ -53,22 +53,35 @@ export const TaskEditModalClient = ({ id }: Props) => {
 			task: {
 				title: data.title,
 				due_date: data.due_date.toISOString(),
-				icon: data.icon
+				icon: data.icon,
+				project_id: data.project_id
 			},
-			participants: data.participants ?? []
+			participants: data.participants || []
 		})
+	}
+
+	const handleOpenChange = (open: boolean) => {
+		setIsOpenModal(open)
+
+		if (!open) {
+			form.reset()
+		}
 	}
 
 	return (
 		<Dialog
-			open
-			onOpenChange={open => {
-				if (!open) closeModal()
-			}}
+			open={isOpenModal}
+			onOpenChange={handleOpenChange}
 		>
+			<AnimateIcon animateOnHover>
+				<DialogTrigger asChild>
+					<Button variant='outline'>Add task</Button>
+				</DialogTrigger>
+			</AnimateIcon>
+
 			<Modal
-				title='Edit task'
-				description={`Update the selected task "${data?.title}"`}
+				title='Create task'
+				description='Fill in the details to create a new task'
 			>
 				<Form {...form}>
 					<form
@@ -87,6 +100,25 @@ export const TaskEditModalClient = ({ id }: Props) => {
 											{...field}
 										/>
 									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name='project_id'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Project</FormLabel>
+
+									<FormControl>
+										<SelectTaskProject
+											value={field.value}
+											onChange={field.onChange}
+										/>
+									</FormControl>
+
 									<FormMessage />
 								</FormItem>
 							)}
@@ -119,7 +151,7 @@ export const TaskEditModalClient = ({ id }: Props) => {
 							type='submit'
 							disabled={isPending}
 						>
-							{isPending ? 'Updating...' : 'Save'}
+							{isPending ? 'Creating...' : 'Add'}
 						</Button>
 					</form>
 				</Form>

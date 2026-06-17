@@ -22,7 +22,7 @@ interface Props {
 	setStatus: (status: TTaskStatus | undefined) => void
 }
 
-export const LastTasksStatusFilter = ({ status, setStatus }: Props) => {
+export const TasksStatusFilter = ({ status, setStatus }: Props) => {
 	return (
 		<div>
 			<DropdownMenu>

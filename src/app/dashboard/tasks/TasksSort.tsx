@@ -15,7 +15,7 @@ interface Props {
 	setSort: (sort: TTaskSortBy) => void
 }
 
-export const LastTasksSort = ({ sort, setSort }: Props) => {
+export const TasksSort = ({ sort, setSort }: Props) => {
 	return (
 		<div>
 			<Select

@@ -1,7 +1,6 @@
 import { useClickOutside } from '@/hooks/useClickOutside'
 import { ChevronDown } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { timeRanges } from '../data/project-chart.data'
 
 interface Props {
 	onRangeChange: (range: ITimeRange) => void
@@ -11,6 +10,17 @@ interface Props {
 export function ProjectChartHeader({ onRangeChange, selectedRange }: Props) {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement | null>(null)
+
+	const timeRanges: ITimeRange[] = [
+		{
+			label: 'Yearly',
+			value: 'yearly'
+		},
+		{
+			label: 'Monthly',
+			value: 'monthly'
+		}
+	]
 
 	const handleRangeChange = (range: ITimeRange) => {
 		onRangeChange(range)

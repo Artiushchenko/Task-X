@@ -1,7 +1,12 @@
-import { SubTaskCreateModal } from '@/app/dashboard/last-tasks/create-subtask/SubTaskCreateModal'
+'use client'
+
+import { SubTaskCreateModal } from '@/app/dashboard/tasks/create-subtask/SubTaskCreateModal'
 import { Brush } from '@/components/animate-ui/icons/brush'
 import { AnimateIcon } from '@/components/animate-ui/icons/icon'
+import PermissionGuard from '@/components/guards/PermissionGuard'
 import { DashboardPages } from '@/config/dashboard-pages'
+import { useTaskDelete } from '@/hooks/task/useTaskDelete'
+import type { TRole } from '@/types/role.types'
 import type { TTask } from '@/types/task.types'
 import { cn } from '@/utils'
 import { ICON_MAP } from '@/utils/icon-map'
@@ -10,16 +15,20 @@ import { format, isToday } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo } from 'react'
+import { ConfirmDialog } from '../ConfirmDialog'
 import { ProgressBar } from '../ProgressBar'
 import { ExportTaskDialog } from './ExportTaskDialog'
 
 interface Props {
 	task: TTask
+	userRole?: TRole | null
 	isColor?: boolean
 	isMinimal?: boolean
 }
 
-export const Task = ({ task, isColor, isMinimal }: Props) => {
+export const Task = ({ task, userRole, isColor, isMinimal }: Props) => {
+	const { isDeleting, deleteTask } = useTaskDelete()
+
 	const completedCount =
 		task?.subtasks?.filter(st => st.is_completed).length || 0
 
@@ -133,24 +142,41 @@ export const Task = ({ task, isColor, isMinimal }: Props) => {
 			)}
 
 			{!isMinimal && (
-				<div className='flex items-center justify-center gap-2'>
-					<SubTaskCreateModal taskId={task.id} />
+				<div className='flex items-center justify-between'>
+					<div className='flex items-center gap-3'>
+						<SubTaskCreateModal taskId={task.id} />
 
-					<AnimateIcon
-						animateOnHover
-						asChild
-					>
-						<Link
-							href={DashboardPages.TASK_EDIT(task.id)}
-							className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
-							aria-label={`Edit task: ${task.title}`}
-							data-testid='edit-task-button'
+						<AnimateIcon
+							animateOnHover
+							asChild
 						>
-							<Brush size={18} />
-						</Link>
-					</AnimateIcon>
+							<Link
+								href={DashboardPages.TASK_EDIT(task.id)}
+								className='border-primary text-primary hover:bg-primary/10 bg-card rounded-full border p-2 transition-colors'
+								aria-label={`Edit task: ${task.title}`}
+								data-testid='edit-task-button'
+							>
+								<Brush size={18} />
+							</Link>
+						</AnimateIcon>
 
-					<ExportTaskDialog task={task} />
+						<ExportTaskDialog task={task} />
+					</div>
+
+					{userRole && (
+						<PermissionGuard
+							userRole={userRole}
+							permission='canDeleteTasks'
+						>
+							<ConfirmDialog
+								title={task.title}
+								description='You’re about to permanently delete this task. This action is irreversible'
+								onConfirm={() => deleteTask(task.id)}
+								isDeleting={isDeleting}
+								isTask
+							/>
+						</PermissionGuard>
+					)}
 				</div>
 			)}
 		</div>

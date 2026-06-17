@@ -1,41 +1,32 @@
 'use client'
 
 import { TasksTimeline } from '@/components/tasks-timeline/TasksTimeline'
-import { LastTasks } from './last-tasks/LastTasks'
 import { ProjectStatisticsChart } from './project-chart/ProjectStatisticsChart'
 import { ProjectStatistics } from './project-statistics/ProjectStatistics'
 
 import { Button } from '@/components/ui/button'
 import { Heading } from '@/components/ui/Heading'
 import { isGlobalSearchOpenAtom } from '@/store/store'
-import type { TProjectsList } from '@/types/project/project.types'
 import type {
 	TGetProjectsChartDataResponse,
 	TGetProjectsStatsResponse
 } from '@/types/statistics.types'
-import type {
-	TGetTasksResponse,
-	TGetTodayTasksResponse
-} from '@/types/task.types'
+import type { TGetTodayTasksResponse } from '@/types/task.types'
 import { cn } from '@/utils'
 import { useSetAtom } from 'jotai'
 import { Search } from 'lucide-react'
 import { Chat } from './chat/Chat'
 
 interface Props {
-	tasks: TGetTasksResponse
 	todayTasks: TGetTodayTasksResponse
 	userId: string
-	projects: TProjectsList
 	projectsStats: TGetProjectsStatsResponse
 	projectsChartData: TGetProjectsChartDataResponse
 }
 
 export function Dashboard({
-	tasks,
 	todayTasks,
 	userId,
-	projects,
 	projectsStats,
 	projectsChartData
 }: Props) {
@@ -78,11 +69,6 @@ export function Dashboard({
 
 					<ProjectStatisticsChart projectsChartData={projectsChartData} />
 				</div>
-
-				<LastTasks
-					projects={projects}
-					tasks={tasks}
-				/>
 
 				<TasksTimeline todayTasks={todayTasks} />
 			</div>

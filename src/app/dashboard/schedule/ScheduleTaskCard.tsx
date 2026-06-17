@@ -1,6 +1,7 @@
 import { ProgressBar } from '@/components/ui/ProgressBar'
 import { DashboardPages } from '@/config/dashboard-pages'
 import type { TScheduleTask } from '@/types/schedule.types'
+import { cn } from '@/utils'
 import { ICON_MAP } from '@/utils/icon-map'
 import { Clock } from 'lucide-react'
 import Link from 'next/link'
@@ -25,7 +26,12 @@ export function ScheduleTaskCard({ task }: Props) {
 			className='block'
 		>
 			<div className='group hover:border-primary hover:bg-muted/50 rounded-xl border p-4 transition-all'>
-				<div className='mb-2 flex items-start justify-between'>
+				<div
+					className={cn(
+						'flex items-start justify-between',
+						totalCount > 0 ? 'mb-2' : 'mb-0'
+					)}
+				>
 					<div className='flex items-start gap-3'>
 						{task.icon && (
 							<span className='text-2xl'>
