@@ -15,11 +15,11 @@ export default async function DashboardLayout({ children, modals }: Props) {
 
 	const [profile, projectsList] = await Promise.all([
 		getServerProfile(),
-		getServerProjects()
+		getServerProjects(true)
 	])
 
 	return (
-		<div className='grid min-h-screen grid-cols-[230px_1fr]'>
+		<div className='grid h-screen grid-cols-[230px_1fr]'>
 			<Sidebar
 				profile={profile}
 				projects={projectsList.data || []}

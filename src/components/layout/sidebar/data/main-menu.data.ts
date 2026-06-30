@@ -1,12 +1,12 @@
 import { Activity } from '@/components/animate-ui/icons/activity'
 import { ChartNoAxesColumn } from '@/components/animate-ui/icons/chart-no-axes-column'
+import { Clock12 } from '@/components/animate-ui/icons/clock-12'
 import { Layers } from '@/components/animate-ui/icons/layers'
 import { LayoutDashboard } from '@/components/animate-ui/icons/layout-dashboard'
 import { List } from '@/components/animate-ui/icons/list'
 import { Settings } from '@/components/animate-ui/icons/settings'
 import { UsersRound } from '@/components/animate-ui/icons/users-round'
 import { DashboardPages } from '@/config/dashboard-pages'
-import { CalendarDays } from 'lucide-react'
 import type { IMenuItem } from '../menu/menu.types'
 
 export const MAIN_MENU: IMenuItem[] = [
@@ -36,7 +36,7 @@ export const MAIN_MENU: IMenuItem[] = [
 		href: DashboardPages.TEAM
 	},
 	{
-		icon: CalendarDays,
+		icon: Clock12,
 		label: 'Schedule',
 		href: DashboardPages.SCHEDULE
 	},

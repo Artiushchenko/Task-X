@@ -23,7 +23,7 @@ export function Chat({ userId }: Props) {
 	}, [messages, userId])
 
 	return (
-		<div className='flex h-screen flex-col'>
+		<div className='flex h-full flex-col'>
 			<Image
 				alt='Chat'
 				src='/images/chat-image.png'

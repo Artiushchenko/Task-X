@@ -30,7 +30,7 @@ export const Sidebar = ({ profile, projects }: Props) => {
 	}
 
 	return (
-		<aside className='bg-white p-4 dark:bg-neutral-800'>
+		<aside className='h-full bg-white p-4 dark:bg-neutral-800'>
 			<div className='flex items-center justify-between'>
 				<SidebarHeading title='Account' />
 
@@ -52,7 +52,7 @@ export const Sidebar = ({ profile, projects }: Props) => {
 
 			<SidebarMenu />
 
-			<SidebarHeading title='Projects' />
+			<SidebarHeading title='Last Projects' />
 
 			<SidebarProjects projects={projects} />
 		</aside>

@@ -2,13 +2,21 @@
 
 import { createClientFromServer } from '@/utils/supabase/server'
 
-export async function getServerProjects() {
-	return (await createClientFromServer())
+export async function getServerProjects(onlyLatest = false) {
+	const supabase = await createClientFromServer()
+
+	let query = supabase
 		.from('projects')
 		.select(`*, tasks(id)`)
 		.order('created_at', {
-			ascending: true
+			ascending: false
 		})
+
+	if (onlyLatest) {
+		query = query.limit(5)
+	}
+
+	return query
 }
 
 export async function getServerProjectBySlug(slug: string) {

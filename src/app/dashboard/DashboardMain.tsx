@@ -11,13 +11,13 @@ export function DashboardMain({ children }: Props) {
 	const { isOpen, setIsOpen } = useGlobalSearchDialog()
 
 	return (
-		<>
+		<div className='min-h-0 overflow-auto'>
 			<main>{children}</main>
 
 			<GlobalSearch
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 			/>
-		</>
+		</div>
 	)
 }

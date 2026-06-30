@@ -9,7 +9,7 @@ export async function getProjects() {
 		.from('projects')
 		.select(`*, tasks(id)`)
 		.order('created_at', {
-			ascending: true
+			ascending: false
 		})
 
 	if (error || !data) {
